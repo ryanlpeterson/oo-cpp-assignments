@@ -22,7 +22,7 @@ using namespace std;
  **/
 void Triangle::getTriangleType(int side1, int side2, int side3)
 {
-    std:cout << "Getting type for triangle with sides {"
+    std::cout << "Getting type for triangle with sides {"
         + std::to_string(side1)+ ", "
         + std::to_string(side2) + ", "
         + std::to_string(side3) + "}: \n";
