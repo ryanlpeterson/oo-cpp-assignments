@@ -1,0 +1,11 @@
+# C++ files
+*.out
+
+# Visual Studio
+.vs/
+
+# VS Code
+*.dSYM/
+
+# Mac
+/.DS_Store
