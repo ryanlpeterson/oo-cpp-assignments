@@ -16,12 +16,12 @@ using namespace std;
 /**
  * Default constructor. Initializes instance variables.
  **/
-Statistic::Statistic()
-{
+Statistic::Statistic() :
     // initialize all values to 0
-    numElements = 0;
-    sum = 0.0;
-    sumOfSquared = 0.0;
+    numElements (0),
+    sum (0.0),
+    sumOfSquared(0.0)
+{
 }
 
 /**
