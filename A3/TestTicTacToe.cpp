@@ -3,7 +3,7 @@
  * Assignment #3: Tic Tac Toe
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 09/19/2021
- * Description: This program provides some automated test cases for TicTacToe.cpp.
+ * Description: This program provides an interactive test interface for TicTacToe.cpp.
  **/
 
 #include <iostream>
@@ -12,11 +12,20 @@ using namespace std;
 
 int main()
 {
-    // Instance of statistic that will be used for testing
+    // Instance of TicTacToe that will be used for testing
     TicTacToe ticTacToe;
 
-    ticTacToe.makeUserMove(1, 3);
-    ticTacToe.makeUserMove(3, 1);
+    int row;
+    int column;
+    while (!ticTacToe.getIsGameOver())
+    {
+        cout << "Select Row: ";
+        cin >> row;
+        cout << "Select Column: ";
+        cin >> column;
+
+        ticTacToe.makeUserMove(row, column);
+    }
 
     return 0;
 }
