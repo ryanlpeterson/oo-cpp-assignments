@@ -17,9 +17,6 @@ class Card
         // ctor, initializes a new card with given rank and suit
         Card(char rank, char suit);
 
-        // returns if card rank and suit is valid
-        bool isValid(char rank, char suit);
-
         // returns the card rank
         char getRank();
 
@@ -33,6 +30,9 @@ class Card
         std::string toString();
 
     private:
+
+        // returns if card rank and suit is valid
+        bool isValid(char rank, char suit);
 
         // array of possible card ranks
         char cardRanks[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};

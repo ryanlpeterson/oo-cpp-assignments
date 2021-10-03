@@ -310,23 +310,12 @@ bool Hand::isOnePair()
     handType = Hand::ONE_PAIR;
     prioritySortedCards = possiblePrioritySortedCards;
     return true;
-
-    // TODO: delete this old way, or go back to this, split into "if else"s and get priority like other methods
-    /*if ((cards[0].getValue() == cards[1].getValue()) || (cards[1].getValue() == cards[2].getValue()) || (cards[2].getValue() == cards[3].getValue()) || (cards[3].getValue() == cards[4].getValue()))
-    {
-        handType = Hand::ONEPAIR;
-        return true;
-    }
-    else
-    {
-        return false;
-    }*/
 }
 
 /**
  * Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order
  * Returns less than 0 if hand1 ranks higher, returns greater than 0 if hand2 ranks higher, and returns 0 if hands rank the same
- * This function is not in a separate class becuase it utilizes several private data members
+ * This function is not in a separate class because it utilizes several private data members
  **/
 int Hand::compareHands(Hand hand1, Hand hand2)
 {

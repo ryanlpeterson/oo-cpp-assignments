@@ -37,39 +37,6 @@ Card::Card(char rank, char suit)
 }
 
 /**
- * Returns if card rank and suit are valid
- **/
-bool Card::isValid(char rank, char suit)
-{
-    bool rankValid = false;
-    bool suitValid = false;
-    int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
-    int cardSuitLength = sizeof(cardSuits) / sizeof(cardSuits[0]);
-
-    // check if rank is valid
-    for (int i = 0; i < cardRanksLength; ++i)
-    {
-        if (cardRanks[i] == rank)
-        {
-            rankValid = true;
-            break;
-        }
-    }
-
-    // check if suit is valid
-    for (int i = 0; i < cardSuitLength; ++i)
-    {
-        if (cardSuits[i] == suit)
-        {
-            suitValid = true;
-            break;
-        }
-    }
-
-    return rankValid && suitValid;
-}
-
-/**
  * Returns the card rank
  **/
 char Card::getRank()
@@ -109,4 +76,37 @@ string Card::toString()
     str += cardRank;
     str += cardSuit;
     return str;
+}
+
+/**
+ * Returns if card rank and suit are valid
+ **/
+bool Card::isValid(char rank, char suit)
+{
+    bool rankValid = false;
+    bool suitValid = false;
+    int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
+    int cardSuitLength = sizeof(cardSuits) / sizeof(cardSuits[0]);
+
+    // check if rank is valid
+    for (int i = 0; i < cardRanksLength; ++i)
+    {
+        if (cardRanks[i] == rank)
+        {
+            rankValid = true;
+            break;
+        }
+    }
+
+    // check if suit is valid
+    for (int i = 0; i < cardSuitLength; ++i)
+    {
+        if (cardSuits[i] == suit)
+        {
+            suitValid = true;
+            break;
+        }
+    }
+
+    return rankValid && suitValid;
 }
