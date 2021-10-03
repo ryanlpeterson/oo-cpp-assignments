@@ -39,9 +39,10 @@ Card::Card(char rank, char suit)
 /**
  * Returns if card rank and suit are valid
  **/
-char Card::isValid(char rank, char suit)
+bool Card::isValid(char rank, char suit)
 {
-    bool valid = false;
+    bool rankValid = false;
+    bool suitValid = false;
     int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
     int cardSuitLength = sizeof(cardSuits) / sizeof(cardSuits[0]);
 
@@ -50,7 +51,7 @@ char Card::isValid(char rank, char suit)
     {
         if (cardRanks[i] == rank)
         {
-            valid = true;
+            rankValid = true;
             break;
         }
     }
@@ -60,12 +61,12 @@ char Card::isValid(char rank, char suit)
     {
         if (cardSuits[i] == suit)
         {
-            valid = true;
+            suitValid = true;
             break;
         }
     }
 
-    return valid;
+    return rankValid && suitValid;
 }
 
 /**

@@ -25,15 +25,15 @@ Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
  **/
 void Hand::sortHand()
 {
-    for(int i = 0; i < 4; ++i)	
-	{
-		int highCard = i;
+    for(int i = 0; i < 4; ++i)    
+    {
+        int highCard = i;
 
-		for (int j = i+1; j < 5; j++)
-		{
-			if(cards[j].getValue() > cards[highCard].getValue())
-				highCard = j;
-		}
+        for (int j = i+1; j < 5; j++)
+        {
+            if(cards[j].getValue() > cards[highCard].getValue())
+                highCard = j;
+        }
 
         if (highCard != i)
         {
@@ -41,7 +41,7 @@ void Hand::sortHand()
             cards[i] = cards[highCard];
             cards[highCard] = card;
         }
-	}
+    }
 }
 
 /**
@@ -102,13 +102,13 @@ void Hand::checkHandType()
 bool Hand::isRoyalFlush()
 {
     // is a straight flush and the first card is an Ace
-	if (isStraightFlush() && cards[0].getRank() == 'A')
+    if (isStraightFlush() && cards[0].getRank() == 'A')
     {
         handType = Hand::ROYAL_FLUSH;
         // prioritySortedCards already set in isStraightFlush() check
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -117,13 +117,13 @@ bool Hand::isRoyalFlush()
  **/
 bool Hand::isStraightFlush()
 {
-	if (isStraight() && isFlush())
+    if (isStraight() && isFlush())
     {
         handType = Hand::STRAIGHT_FLUSH;
         // prioritySortedCards already set in isStraight() check
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -133,20 +133,20 @@ bool Hand::isStraightFlush()
 bool Hand::isFourOfAKind()
 {
     // if first four cards are the same
-	if((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()))
+    if((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()))
     {
         handType = Hand::FOUR_OF_A_KIND;
         prioritySortedCards = cards;
-		return true;
+        return true;
     }
     // if last four cards are the same
-	else if((cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue()))
+    else if((cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::FOUR_OF_A_KIND;
         prioritySortedCards = {cards[1], cards[2], cards[3], cards[4], cards[0]};
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -154,20 +154,20 @@ bool Hand::isFourOfAKind()
  * Determine if the hand is a full house (three of a kind and a pair)
  **/
 bool Hand::isFullHouse()
-{	
-	if (((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue())) && (cards[3].getValue() == cards[4].getValue()))
+{    
+    if (((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue())) && (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::FULL_HOUSE;
         prioritySortedCards = cards;
-		return true;
+        return true;
     }
-	else if (((cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue())) && (cards[0].getValue() == cards[1].getValue()))
+    else if (((cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue())) && (cards[0].getValue() == cards[1].getValue()))
     {
         handType = Hand::FULL_HOUSE;
         prioritySortedCards = {cards[2], cards[3], cards[4], cards[0], cards[1]};
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -179,9 +179,9 @@ bool Hand::isFlush()
     char suitOfFirst = cards[0].getSuit();
 
     // evaluate the card suits to determine if it's a flush
-	for (int i = 1; i < 5; ++i)
+    for (int i = 1; i < 5; ++i)
     {
-		if (cards[i].getSuit() != suitOfFirst)
+        if (cards[i].getSuit() != suitOfFirst)
         {
             return false;
         }
@@ -189,7 +189,7 @@ bool Hand::isFlush()
 
     handType = Hand::FLUSH;
     prioritySortedCards = cards;
-	return true;
+    return true;
 }
 
 /**
@@ -199,9 +199,9 @@ bool Hand::isFlush()
 bool Hand::isStraight()
 {
     // evaluate the card ranks to determine if it's a straight
-	for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-		if ((cards[i].getValue()-1) != cards[i+1].getValue())
+        if ((cards[i].getValue()-1) != cards[i+1].getValue())
         {
             return false;
         }
@@ -209,7 +209,7 @@ bool Hand::isStraight()
 
     handType = Hand::STRAIGHT;
     prioritySortedCards = cards;
-	return true;
+    return true;
 }
 
 /**
@@ -218,27 +218,27 @@ bool Hand::isStraight()
 bool Hand::isThreeOfAKind()
 {
     // check if first three cards are the same
-	if ((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue()))
+    if ((cards[0].getValue() == cards[1].getValue()) && (cards[1].getValue() == cards[2].getValue()))
     {
         handType = Hand::THREE_OF_A_KIND;
         prioritySortedCards = cards;
-		return true;
+        return true;
     }
     // check if middle three cards are the same
-	else if ((cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()))
+    else if ((cards[1].getValue() == cards[2].getValue()) && (cards[2].getValue() == cards[3].getValue()))
     {
         handType = Hand::THREE_OF_A_KIND;
         prioritySortedCards = {cards[1], cards[2], cards[3], cards[0], cards[4]};
-		return true;
+        return true;
     }
     // check if last three cards are the same
-	else if ((cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue()))
+    else if ((cards[2].getValue() == cards[3].getValue()) && (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::THREE_OF_A_KIND;
         prioritySortedCards = {cards[2], cards[3], cards[4], cards[0], cards[1]};
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -248,27 +248,27 @@ bool Hand::isThreeOfAKind()
 bool Hand::isTwoPair()
 {
     // check if two pairs in first 4 cards (excluding last card)
-	if ((cards[0].getValue() == cards[1].getValue()) && (cards[2].getValue() == cards[3].getValue()))
+    if ((cards[0].getValue() == cards[1].getValue()) && (cards[2].getValue() == cards[3].getValue()))
     {
         handType = Hand::TWO_PAIR;
         prioritySortedCards = cards;
-		return true;
+        return true;
     }
     // check for two pairs in last 4 cards (excluding first card)
-	else if ((cards[1].getValue() == cards[2].getValue()) && (cards[3].getValue() == cards[4].getValue()))
+    else if ((cards[1].getValue() == cards[2].getValue()) && (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::TWO_PAIR;
         prioritySortedCards = {cards[1], cards[2], cards[3], cards[4], cards[0]};
-		return true;
+        return true;
     }
     // check for two pairs in first and last cards (excluding middle card)
-	else if ((cards[0].getValue() == cards[1].getValue()) && (cards[3].getValue() == cards[4].getValue()))
+    else if ((cards[0].getValue() == cards[1].getValue()) && (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::TWO_PAIR;
         prioritySortedCards = {cards[0], cards[1], cards[3], cards[4], cards[2]};
-		return true;
+        return true;
     }
-	
+    
     return false;
 }
 
@@ -312,14 +312,14 @@ bool Hand::isOnePair()
     return true;
 
     // TODO: delete this old way, or go back to this, split into "if else"s and get priority like other methods
-	/*if ((cards[0].getValue() == cards[1].getValue()) || (cards[1].getValue() == cards[2].getValue()) || (cards[2].getValue() == cards[3].getValue()) || (cards[3].getValue() == cards[4].getValue()))
+    /*if ((cards[0].getValue() == cards[1].getValue()) || (cards[1].getValue() == cards[2].getValue()) || (cards[2].getValue() == cards[3].getValue()) || (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::ONEPAIR;
-		return true;
+        return true;
     }
-	else
+    else
     {
-		return false;
+        return false;
     }*/
 }
 
