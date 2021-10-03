@@ -4,10 +4,11 @@
  * Assignment #4: Poker Hand Rankings
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 10/03/2021
- * Description: Card class that contains a card number and suit
+ * Description: Card class that contains a card rank and suit
  **/
 
 #include "Card.h"
+#include <iostream>
 using namespace std;
 
 /**
@@ -19,20 +20,60 @@ Card::Card()
 }
 
 /**
- * Constructor to initialize the card with the given number and suit
+ * Constructor to initialize the card with the given rank and suit
  **/
-Card::Card(char number, char suit)
+Card::Card(char rank, char suit)
 {
-    cardNumber = number;
-    cardSuit = suit;
+    if (isValid(rank, suit))
+    {
+        cardRank = rank;
+        cardSuit = suit;
+    }
+    else
+    {
+        cout << "Please enter a valid card rank and suit";
+        return;
+    }
 }
 
 /**
- * Returns the card number
+ * Returns if card rank and suit are valid
  **/
-char Card::getNumber()
+char Card::isValid(char rank, char suit)
 {
-    return cardNumber;
+    bool valid = false;
+    int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
+    int cardSuitLength = sizeof(cardSuits) / sizeof(cardSuits[0]);
+
+    // check if rank is valid
+    for (int i = 0; i < cardRanksLength; ++i)
+    {
+        if (cardRanks[i] == rank)
+        {
+            valid = true;
+            break;
+        }
+    }
+
+    // check if suit is valid
+    for (int i = 0; i < cardSuitLength; ++i)
+    {
+        if (cardSuits[i] == suit)
+        {
+            valid = true;
+            break;
+        }
+    }
+
+    return valid;
+}
+
+/**
+ * Returns the card rank
+ **/
+char Card::getRank()
+{
+    return cardRank;
 }
 
 /**
@@ -48,10 +89,10 @@ char Card::getSuit()
  **/
 int Card::getValue()
 {
-    int cardNumbersLength = sizeof(cardNumbers) / sizeof(cardNumbers[0]);
-    for (int i = 0; i < cardNumbersLength; ++i)
+    int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
+    for (int i = 0; i < cardRanksLength; ++i)
     {
-        if (cardNumbers[i] == cardNumber)
+        if (cardRanks[i] == cardRank)
         {
             return cardValues[i];
         }
@@ -59,12 +100,12 @@ int Card::getValue()
 }
 
 /**
- * Returns the card number and suit as a concatenated string
+ * Returns the card rank and suit as a concatenated string
  **/
 string Card::toString()
 {
     string str;
-    str += cardNumber;
+    str += cardRank;
     str += cardSuit;
     return str;
 }

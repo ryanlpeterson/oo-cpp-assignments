@@ -14,11 +14,14 @@ class Card
         // default ctor, initializes a new card
         Card();
 
-        // ctor, initializes a new card with given number and suit
-        Card(char number, char suit);
+        // ctor, initializes a new card with given rank and suit
+        Card(char rank, char suit);
 
-        // returns the card number
-        char getNumber();
+        // returns if card rank and suit is valid
+        bool isValid(char rank, char suit);
+
+        // returns the card rank
+        char getRank();
 
         // returns the card suit
         char getSuit();
@@ -26,16 +29,13 @@ class Card
         // returns the value of the card
         int getValue();
 
-        // returns the card number and suit as a concatenated string
+        // returns the card rank and suit as a concatenated string
         std::string toString();
 
     private:
 
-        // TODO: set these to static const
-        // TODO: change to use map
-        // TODO: change to calling them ranks instead of numbers
-        // array of possible card numbers
-        char cardNumbers[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
+        // array of possible card ranks
+        char cardRanks[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
 
         // array of card values
         int cardValues[13] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
@@ -43,8 +43,8 @@ class Card
         // array of possible card suits
         char cardSuits[4] = {'C', 'S', 'H', 'D'};
 
-        // Card's number
-        char cardNumber;
+        // Card's rank
+        char cardRank;
 
         // Card's suit
         char cardSuit;

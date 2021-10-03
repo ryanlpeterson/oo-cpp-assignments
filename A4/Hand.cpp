@@ -102,7 +102,7 @@ void Hand::checkHandType()
 bool Hand::isRoyalFlush()
 {
     // is a straight flush and the first card is an Ace
-	if (isStraightFlush() && cards[0].getNumber() == 'A')
+	if (isStraightFlush() && cards[0].getRank() == 'A')
     {
         handType = Hand::ROYAL_FLUSH;
         // prioritySortedCards already set in isStraightFlush() check
@@ -198,7 +198,7 @@ bool Hand::isFlush()
  **/
 bool Hand::isStraight()
 {
-    // evaluate the card numbers to determine if it's a straight
+    // evaluate the card ranks to determine if it's a straight
 	for (int i = 0; i < 4; ++i)
     {
 		if ((cards[i].getValue()-1) != cards[i+1].getValue())
@@ -281,10 +281,10 @@ bool Hand::isOnePair()
     // first two positions are reserved for pair, singles will start at index 2
     int nonPairCardCursor = 2;
 
-    // evaluate the card numbers to determine if it's a straight
+    // evaluate the card ranks to determine if it's a straight
     for (int i = 0; i < 5; ++i)
     {
-        if ((i < 4) && (cards[i].getNumber() == cards[i + 1].getNumber()))
+        if ((i < 4) && (cards[i].getRank() == cards[i + 1].getRank()))
         {
             possiblePrioritySortedCards[0] = cards[i];
             possiblePrioritySortedCards[1] = cards[i + 1];
@@ -326,6 +326,7 @@ bool Hand::isOnePair()
 /**
  * Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order
  * Returns less than 0 if hand1 ranks higher, returns greater than 0 if hand2 ranks higher, and returns 0 if hands rank the same
+ * This function is not in a separate class becuase it utilizes several private data members
  **/
 int Hand::compareHands(Hand hand1, Hand hand2)
 {
