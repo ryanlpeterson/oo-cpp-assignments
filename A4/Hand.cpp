@@ -6,8 +6,8 @@
  * Description: Hand class that keeps track of cards in a player's hand and compares hands
  **/
 
-#include <iostream>
 #include "Hand.h"
+#include <iostream>
 using namespace std;
 
 /**
@@ -21,7 +21,7 @@ Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
 }
 
 /**
- * Sort the hand (highest to lowest card values)
+ * Sort the hand in descending order based on card rank value
  **/
 void Hand::sortHand()
 {
@@ -45,12 +45,64 @@ void Hand::sortHand()
 }
 
 /**
+ * Determine the applicable highest ranking hand type
+ * Hand types must be checked in descending priority, as more common types do not check that they are not a rarer type
+ *  e.g. isOnePair() will return true if the hand contains a three of a kind, and isFlush() will return true if is a straight flush
+ * Also sets the prioritySortedCards based on the hand type
+ **/
+void Hand::checkHandType()
+{
+    if (isRoyalFlush())
+    {
+        return;
+    }
+    else if (isStraightFlush())
+    {
+        return;
+    }
+    else if (isFourOfAKind())
+    {
+        return;
+    }
+    else if (isFullHouse())
+    {
+        return;
+    }
+    else if (isFlush())
+    {
+        return;
+    }
+    else if (isStraight())
+    {
+        return;
+    }
+    else if (isThreeOfAKind())
+    {
+        return;
+    }
+    else if (isTwoPair())
+    {
+        return;
+    }
+    else if (isOnePair())
+    {
+        return;
+    }
+    else
+    {
+        handType = Hand::HIGH_CARD;
+        prioritySortedCards = cards;
+        return;
+    }
+}
+
+/**
  * Determine if the hand is a royal flush (A, K, Q, J, 10, all the same suit)
  **/
 bool Hand::isRoyalFlush()
 {
     // is a straight flush and the first card is an Ace
-	if (isStraightFlush() && cards[0].getValue()== 14)
+	if (isStraightFlush() && cards[0].getNumber() == 'A')
     {
         handType = Hand::ROYAL_FLUSH;
         // prioritySortedCards already set in isStraightFlush() check
@@ -142,6 +194,7 @@ bool Hand::isFlush()
 
 /**
  * Determine if the hand is a straight (five cards in a sequence, but not the same suit)
+ * Not considering 5432A as a straight here as rules can vary, only considering high rank ace straight, AKQJT
  **/
 bool Hand::isStraight()
 {
@@ -229,12 +282,14 @@ bool Hand::isOnePair()
     int nonPairCardCursor = 2;
 
     // evaluate the card numbers to determine if it's a straight
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        if (cards[i].getNumber() == cards[i + 1].getNumber())
+        if ((i < 4) && (cards[i].getNumber() == cards[i + 1].getNumber()))
         {
             possiblePrioritySortedCards[0] = cards[i];
             possiblePrioritySortedCards[1] = cards[i + 1];
+            // skip checking the next because it is the other part of the pair
+            i++;
         }
         else
         {
@@ -256,7 +311,7 @@ bool Hand::isOnePair()
     prioritySortedCards = possiblePrioritySortedCards;
     return true;
 
-    // TODO: delete this old way
+    // TODO: delete this old way, or go back to this, split into "if else"s and get priority like other methods
 	/*if ((cards[0].getValue() == cards[1].getValue()) || (cards[1].getValue() == cards[2].getValue()) || (cards[2].getValue() == cards[3].getValue()) || (cards[3].getValue() == cards[4].getValue()))
     {
         handType = Hand::ONEPAIR;
@@ -269,62 +324,11 @@ bool Hand::isOnePair()
 }
 
 /**
- * Checks the hand for all possible hand types
- **/
-void Hand::checkHandType()
-{
-    if (isRoyalFlush())
-    {
-		return;
-    }
-	else if (isStraightFlush())
-    {
-		return;
-    }
-	else if (isFourOfAKind())
-    {
-		return;
-    }
-	else if (isFullHouse())
-    {
-		return;
-    }
-	else if (isFlush())
-    {
-		return;
-    }
-	else if (isStraight())
-    {
-		return;
-    }
-	else if (isThreeOfAKind())
-    {
-        return;
-    }
-	else if (isTwoPair())
-    {
-        return;
-    }
-	else if (isOnePair())
-    {
-        return;
-    }
-    else
-    {
-        handType = Hand::HIGH_CARD;
-        prioritySortedCards = cards;
-        return;
-    }
-}
-
-/**
- * Function to compare
+ * Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order
+ * Returns less than 0 if hand1 ranks higher, returns greater than 0 if hand2 ranks higher, and returns 0 if hands rank the same
  **/
 int Hand::compareHands(Hand hand1, Hand hand2)
 {
-    //int hand1HandTypeScore = hand1.handType;
-    //int hand2HandTypeScore = hand2.handType;
-
     // lower handType value is better
     if (hand1.handType < hand2.handType)
     {
@@ -347,83 +351,26 @@ int Hand::compareHands(Hand hand1, Hand hand2)
         {
             return 1;
         }
-        // cards are the same, continue
+        // cards are the same, continue to the next cards
     }
 
-    // hands must be the exact same
+    // hands must be of equal rank
     return 0;
 }
 
 /**
- * Function to print each card in the hand and the hand type
+ * Returns the hand as a formatted string
  **/
-void Hand::print()
+string Hand::toString()
 {
-    cout << "(";
-    cards[0].print();
+    string str;
+    str += "(";
+    str += prioritySortedCards[0].toString();
     for (int i = 1; i < 5; ++i)
     {
-        cout << ", ";
-        cards[i].print();
+        str += ", " + prioritySortedCards[i].toString();
     }
-    cout << ") ";
+    str += ")";
 
-    printHandType();
-}
-
-/**
- * Function to print the hand type (flush, straight, etc.)
- **/
-void Hand::printHandType()
-{
-    cout << "Hand Type: ";
-
-    switch (handType)
-    {
-        case Hand::STRAIGHT_FLUSH:
-        {
-            cout << "Straight Flush";
-            break;
-        }
-        case Hand::FOUR_OF_A_KIND:
-        {
-            cout << "Four of a Kind";
-            break;
-        }
-        case Hand::FULL_HOUSE:
-        {
-            cout << "Full House";
-            break;
-        }
-        case Hand::FLUSH:
-        {
-            cout << "Flush";
-            break;
-        }
-        case Hand::STRAIGHT:
-        {
-            cout << "Straight";
-            break;
-        }
-        case Hand::THREE_OF_A_KIND:
-        {
-            cout << "Three of a Kind";
-            break;
-        }
-        case Hand::TWO_PAIR:
-        {
-            cout << "Two Pair";
-            break;
-        }
-        case Hand::ONE_PAIR:
-        {
-            cout << "One Pair";
-            break;
-        }
-        case Hand::HIGH_CARD:
-        {
-            cout << "High Card";
-            break;
-        }
-    }
+    return str;
 }

@@ -7,7 +7,6 @@
  * Description: Card class that contains a card number and suit
  **/
 
-#include <iostream>
 #include "Card.h"
 using namespace std;
 
@@ -60,9 +59,12 @@ int Card::getValue()
 }
 
 /**
- * Print the card number and suit
+ * Returns the card number and suit as a concatenated string
  **/
-void Card::print()
+string Card::toString()
 {
-    cout << cardNumber << cardSuit;
+    string str;
+    str += cardNumber;
+    str += cardSuit;
+    return str;
 }

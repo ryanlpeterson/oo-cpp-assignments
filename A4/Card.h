@@ -5,6 +5,8 @@
  * Due: 10/03/2021
  **/
 
+#include <string>
+
 class Card
 {
     public:
@@ -15,16 +17,17 @@ class Card
         // ctor, initializes a new card with given number and suit
         Card(char number, char suit);
 
-        // function that returns the card number
+        // returns the card number
         char getNumber();
 
-        // function that returns the card suit
+        // returns the card suit
         char getSuit();
 
+        // returns the value of the card
         int getValue();
 
-        // function to print the card
-        void print();
+        // returns the card number and suit as a concatenated string
+        std::string toString();
 
     private:
 
