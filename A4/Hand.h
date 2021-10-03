@@ -6,13 +6,11 @@
  **/
 
 #include "Card.h"
-using namespace std;
+#include <array>
 
 class Hand
 {
     public:
-
-        Hand();
 
         Hand(Card card0, Card card1, Card card2, Card card3, Card card4);
 
@@ -36,9 +34,9 @@ class Hand
 
         bool isOnePair();
 
-        int getHighCard();
-
         void checkHandType();
+
+        static int compareHands(Hand hand1, Hand hand2);
 
         void print();
 
@@ -48,20 +46,23 @@ class Hand
 
         enum HandType
         {
-            ROYALFLUSH,
-            STRAIGHTFLUSH,
-            FOUROFAKIND,
-            FULLHOUSE,
+            ROYAL_FLUSH,
+            STRAIGHT_FLUSH,
+            FOUR_OF_A_KIND,
+            FULL_HOUSE,
             FLUSH,
             STRAIGHT,
-            THREEOFAKIND,
-            TWOPAIR,
-            ONEPAIR,
-            HIGHCARD
+            THREE_OF_A_KIND,
+            TWO_PAIR,
+            ONE_PAIR,
+            HIGH_CARD
         };
 
         // array of cards in the hand
-        Card cards[5];
+        std::array<Card, 5> cards;
+
+        // array of cards in the hand sorted based on priority given the hand type
+        std::array<Card, 5> prioritySortedCards;
 
         // type of hand (flush, fullhouse, etc.)
         HandType handType;

@@ -28,6 +28,9 @@ class Card
 
     private:
 
+        // TODO: set these to static const
+        // TODO: change to use map
+        // TODO: change to calling them ranks instead of numbers
         // array of possible card numbers
         char cardNumbers[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
 

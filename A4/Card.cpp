@@ -49,7 +49,8 @@ char Card::getSuit()
  **/
 int Card::getValue()
 {
-    for (int i = 0; i < cardNumbers.size(); ++i)
+    int cardNumbersLength = sizeof(cardNumbers) / sizeof(cardNumbers[0]);
+    for (int i = 0; i < cardNumbersLength; ++i)
     {
         if (cardNumbers[i] == cardNumber)
         {
