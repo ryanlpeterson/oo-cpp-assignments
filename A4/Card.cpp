@@ -19,6 +19,16 @@ Card::Card()
 }
 
 /**
+ * Copy constructor
+ **/
+Card::Card(const Card& other) :
+    cardRank (other.cardRank),
+    cardSuit (other.cardSuit)
+{
+
+}
+
+/**
  * Constructor to initialize the card with the given rank and suit
  **/
 Card::Card(char rank, char suit)
@@ -33,6 +43,16 @@ Card::Card(char rank, char suit)
         cout << "Please enter a valid card rank and suit";
         return;
     }
+}
+
+/**
+ * Assignment operator
+ **/
+Card& Card::operator=(const Card& other)
+{
+    cardRank = other.cardRank;
+    cardSuit = other.cardSuit;
+    return *this;
 }
 
 /**

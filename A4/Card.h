@@ -15,8 +15,14 @@ class Card
         // default ctor, initializes a new card
         Card();
 
+        // copy constructor
+        Card(const Card &other);
+
         // ctor, initializes a new card with given rank and suit
         Card(char rank, char suit);
+
+        // assignment operator
+        Card& operator=(const Card& other);
 
         // returns the card rank
         char getRank();
