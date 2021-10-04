@@ -1,4 +1,3 @@
-
 /**
  * EN.605.604.82 : Object-Oriented Programming with C++
  * Assignment #4: Poker Hand Rankings

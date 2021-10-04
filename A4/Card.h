@@ -6,6 +6,7 @@
  **/
 
 #include <string>
+#include <array>
 
 class Card
 {
@@ -35,13 +36,13 @@ class Card
         bool isValid(char rank, char suit);
 
         // array of possible card ranks
-        char cardRanks[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
+        const std::array<char, 13> cardRanks = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
 
         // array of card values
-        int cardValues[13] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        const std::array<char, 13> cardValues = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
         // array of possible card suits
-        char cardSuits[4] = {'C', 'S', 'H', 'D'};
+        const std::array<char, 4> cardSuits = {'C', 'S', 'H', 'D'};
 
         // Card's rank
         char cardRank;
