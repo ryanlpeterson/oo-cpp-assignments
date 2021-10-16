@@ -38,9 +38,9 @@ int main()
     // Check bounds (exception becuase not between 0.0 and 1.0)
     Probability c = 12;
 
-    // Create probability to test bounds
+    // Create probability for testing
     Probability d = .5;
 
     // Check bounds (exception becuase not between 0.0 and 1.0)
-    d = 12;
+    d = -12;
 }
