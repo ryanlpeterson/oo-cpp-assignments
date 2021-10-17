@@ -10,7 +10,7 @@
 #include <stdexcept>
 using namespace std;
 
-// Constructor
+// Constructor that accepts a double in the inclusive range (0.0-1.0)
 Probability::Probability(double value) :
     // Check if value is within bounds (0.0-1.0)
     value (
@@ -21,7 +21,7 @@ Probability::Probability(double value) :
 
 }
 
-// Assignment operator
+// Assignment operator that accepts a double in the inclusive range (0.0-1.0)
 const Probability& Probability::operator=(double value) {
     // Check if new value is within bounds (0.0-1.0)
     this->value = (value >= 0.0 && value <= 1.0) ? value :

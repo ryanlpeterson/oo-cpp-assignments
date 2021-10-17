@@ -3,7 +3,7 @@
  * Assignment #5: Probability
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 10/17/2021
- * Description: This program provides an interactive test interface for the Probability cpp file
+ * Description: This program provides an automated test interface for the Probability cpp file
  **/
 
 #include <iostream>
@@ -13,10 +13,11 @@ using namespace std;
 int main()
 {
     // Create probabilities to use in testing
-    Probability a = 0.3;
-    Probability b = 0.9;
+    Probability a { 0.3 };
+    Probability b { 0.7 };
+    b = 0.9;
 
-    // Test assignment operator
+    // Test constructor and assignment operator
     cout << "a = " << a.getValue() << endl;
     cout << "b = " << b.getValue() << endl;
 
@@ -35,12 +36,20 @@ int main()
     // Test probability of a but not b occurring
     cout << "a - b = " << (a - b) << endl;
 
-    // Check bounds (exception becuase not between 0.0 and 1.0)
-    Probability c = 12;
+    // Check constructor error bounds (exception becuase not between 0.0 and 1.0)
+    try {
+        Probability c { 1.1 };
+    }
+    catch (const exception& e) {
+        cout << "Properly errored on invalid constructor use: " << e.what() << endl;
+    }
 
-    // Create probability for testing
-    Probability d = .5;
-
-    // Check bounds (exception becuase not between 0.0 and 1.0)
-    d = -12;
+    // Check assignment operator error bounds (exception becuase not between 0.0 and 1.0)
+    Probability d { 0.5 };
+    try {
+        d = -0.1;
+    }
+    catch (const exception& e) {
+        cout << "Properly errored on invalid assignment operator use: " << e.what() << endl;
+    }
 }
