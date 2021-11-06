@@ -26,7 +26,7 @@ double Variable::Evaluate() {
 }
 
 std::shared_ptr<Tree> Variable::Derivative(std::string variableName) {
-    if (variableName == name) {
+    if (variableName == "X") {
         return make_shared<Constant>(1.0);
     }
     return make_shared<Constant>(0.0);
