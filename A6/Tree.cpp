@@ -10,6 +10,8 @@
 #include "Tree.h"
 using namespace std;
 
+std::map<std::string, double> Tree::symbolTable = map<string, double>();
+
 Tree::Tree()
 {
 }
@@ -19,8 +21,21 @@ Tree::Tree(const Tree& left, const Tree& right) :
 {
 }
 
+Tree::Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2) :
+    left (p1), right(p2)
+{
+}
+
 shared_ptr<Tree> Tree::clone() {
-    //return make_shared<Tree>(new Tree(left->clone(), right->clone()));
+   return make_shared<Tree>(left->clone(), right->clone());
+}
+
+double Tree::Evaluate() {
+    return 0.0;
+}
+
+std::shared_ptr<Tree> Tree::Derivative(std::string variableName) {
+    return clone();
 }
 
 shared_ptr<Tree> Tree::getLeftTree() {
@@ -29,4 +44,12 @@ shared_ptr<Tree> Tree::getLeftTree() {
 
 shared_ptr<Tree> Tree::getRightTree() {
     return right;
+}
+
+void Tree::setVariableValue(string name, double value) {
+    symbolTable.insert(pair<string, double>(name, value));
+}
+
+double Tree::getVariableValue(string name) {
+    return symbolTable.at(name);
 }

@@ -17,17 +17,17 @@ Variable::Variable(string name) :
 }
 
 shared_ptr<Tree> Variable::clone() {
-    return make_shared<Tree>(new Variable(name));
+    return make_shared<Variable>(name);
 }
 
 double Variable::Evaluate() {
     // potentially throws out_of_range exception if symbolTable does not have entry for this variable's name
-    return symbolTable.at(name);
+    return getVariableValue(name);
 }
 
 std::shared_ptr<Tree> Variable::Derivative(std::string variableName) {
     if (variableName == name) {
-        return make_shared<Tree>(new Constant(1.0));
+        return make_shared<Constant>(1.0);
     }
-    return make_shared<Tree>(new Constant(0.0));
+    return make_shared<Constant>(0.0);
 }

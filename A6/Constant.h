@@ -5,6 +5,9 @@
  * Due: 10/31/2021
  **/
 
+#ifndef CONSTANT_H
+#define CONSTANT_H
+
 #include "Tree.h"
 
 class Constant : public Tree
@@ -22,3 +25,4 @@ class Constant : public Tree
         double value;
         // will NOT use left and right Trees
 };
+#endif

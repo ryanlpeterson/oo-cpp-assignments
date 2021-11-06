@@ -5,6 +5,9 @@
  * Due: 10/31/2021
  **/
 
+#ifndef TREE_H
+#define TREE_H
+
 #include <iostream>
 #include <map>
 
@@ -15,6 +18,10 @@ class Tree
         Tree();
 
         Tree(const Tree& left, const Tree& right);
+
+        Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
+
+        virtual ~Tree() {};
 
         std::shared_ptr<Tree> clone();
         
@@ -33,9 +40,15 @@ class Tree
 
         // FIXME: either move to private and add public insert and erase functions,
         // or move the map to a singleton
-        static std::map<std::string, double> symbolTable;
+
+        static void setVariableValue(std::string name, double value);
+
+        static double getVariableValue(std::string name);
 
     private:
         std::shared_ptr<Tree> left;
         std::shared_ptr<Tree> right;
+
+        static std::map<std::string, double> symbolTable;
 };
+#endif

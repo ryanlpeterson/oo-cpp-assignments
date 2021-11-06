@@ -16,7 +16,7 @@ Constant::Constant(double value) :
 }
 
 shared_ptr<Tree> Constant::clone() {
-    return make_unique<Tree>(new Constant(value));
+    return make_shared<Constant>(value);
 }
 
 double Constant::Evaluate() {
@@ -25,5 +25,5 @@ double Constant::Evaluate() {
 
 // variableName is unused in this instance
 std::shared_ptr<Tree> Constant::Derivative(std::string variableName) {
-    return make_unique<Tree>(new Constant(0.0));
+    return make_shared<Constant>(0.0);
 }
