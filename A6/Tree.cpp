@@ -47,7 +47,7 @@ shared_ptr<Tree> Tree::getRightTree() {
 }
 
 void Tree::setVariableValue(string name, double value) {
-    symbolTable.insert(pair<string, double>(name, value));
+    symbolTable[name] = value;
 }
 
 double Tree::getVariableValue(string name) {

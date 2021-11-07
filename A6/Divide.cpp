@@ -7,6 +7,9 @@
  **/
 
 #include "Divide.h"
+#include "Multiply.h"
+#include "Add.h"
+#include "Subtract.h"
 using namespace std;
 
 // calls Tree ctor
@@ -32,8 +35,12 @@ double Divide::Evaluate() {
     return getLeftTree()->Evaluate() / getRightTree()->Evaluate();
 }
 
-// FIXME - update for division
 std::shared_ptr<Tree> Divide::Derivative(std::string variableName) {
-    // (v*du - u*dv) / v*v
-    return make_shared<Divide>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
+    shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
+    shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
+    shared_ptr<Multiply> vv = make_shared<Multiply>(getRightTree(), getRightTree());
+
+    shared_ptr<Subtract> numerator = make_shared<Subtract>(vdu, udv);
+
+    return make_shared<Divide>(numerator, vv);
 }

@@ -7,6 +7,7 @@
  **/
 
 #include "Multiply.h"
+#include "Add.h"
 using namespace std;
 
 // calls Tree ctor
@@ -32,12 +33,9 @@ double Multiply::Evaluate() {
     return getLeftTree()->Evaluate() * getRightTree()->Evaluate();
 }
 
-// FIXME - update for multiplication
 std::shared_ptr<Tree> Multiply::Derivative(std::string variableName) {
-    // u*dv + v*du
-    // so left is u and v is right?
-    double udv = getLeftTree()->Evaluate() * getRightTree()->Derivative(variableName)->Evaluate();
-    double vdu = getRightTree()->Evaluate() * getLeftTree()->Derivative(variableName)->Evaluate();
+    shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
+    shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
+
     return make_shared<Add>(udv, vdu);
-    //return make_shared<Multiply>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
 }

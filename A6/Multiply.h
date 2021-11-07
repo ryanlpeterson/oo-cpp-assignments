@@ -9,7 +9,6 @@
 #define MULTIPLY_H
 
 #include "Tree.h"
-#include "Add.h"
 
 class Multiply: public Tree
 {

@@ -6,8 +6,8 @@
  * Description: 
  **/
 
-#include "Constant.h"
 #include "Variable.h"
+#include "Constant.h"
 using namespace std;
 
 // calls default Tree ctor
@@ -26,7 +26,7 @@ double Variable::Evaluate() {
 }
 
 std::shared_ptr<Tree> Variable::Derivative(std::string variableName) {
-    if (variableName == "X") {
+    if (variableName == name) {
         return make_shared<Constant>(1.0);
     }
     return make_shared<Constant>(0.0);

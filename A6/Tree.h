@@ -38,9 +38,6 @@ class Tree
 
         std::shared_ptr<Tree> getRightTree();
 
-        // FIXME: either move to private and add public insert and erase functions,
-        // or move the map to a singleton
-
         static void setVariableValue(std::string name, double value);
 
         static double getVariableValue(std::string name);
