@@ -15,15 +15,14 @@ Add::Add(const Tree& left, const Tree& right) :
 {
 }
 
-/*
-Add::Add(Tree* p1, Tree* p2)
-{
-    this->left = make_shared<Tree>(*p1);
-    this->right = make_shared<Tree>(*p2);
-}
-*/
 
-Add::Add(std::shared_ptr<Tree> left, std::shared_ptr<Tree> right) :
+Add::Add(Tree* left, Tree* right) :
+    Tree::Tree(left, right)
+{
+}
+
+
+Add::Add(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)
 {
 }
@@ -32,6 +31,15 @@ double Add::Evaluate() {
     return getLeftTree()->Evaluate() + getRightTree()->Evaluate();
 }
 
-std::shared_ptr<Tree> Add::Derivative(std::string variableName) {
+shared_ptr<Tree> Add::Derivative(string variableName) {
     return make_shared<Add>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
+}
+
+ostream& Add::formatOutput(ostream& out) const {
+    out << "(";
+    getLeftTree()->formatOutput(out);
+    out << " + ";
+    getRightTree()->formatOutput(out);
+    out << ")";
+    return out;
 }

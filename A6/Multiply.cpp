@@ -24,7 +24,7 @@ Add::Add(Tree* p1, Tree* p2)
 }
 */
 
-Multiply::Multiply(std::shared_ptr<Tree> left, std::shared_ptr<Tree> right) :
+Multiply::Multiply(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)
 {
 }
@@ -33,9 +33,18 @@ double Multiply::Evaluate() {
     return getLeftTree()->Evaluate() * getRightTree()->Evaluate();
 }
 
-std::shared_ptr<Tree> Multiply::Derivative(std::string variableName) {
+shared_ptr<Tree> Multiply::Derivative(string variableName) {
     shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
     shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
 
     return make_shared<Add>(udv, vdu);
+}
+
+ostream& Multiply::formatOutput(ostream& out) const {
+    out << "(";
+    getLeftTree()->formatOutput(out);
+    out << " * ";
+    getRightTree()->formatOutput(out);
+    out << ")";
+    return out;
 }

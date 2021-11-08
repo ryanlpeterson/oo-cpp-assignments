@@ -24,6 +24,15 @@ double Constant::Evaluate() {
 }
 
 // variableName is unused in this instance
-std::shared_ptr<Tree> Constant::Derivative(std::string variableName) {
+shared_ptr<Tree> Constant::Derivative(string variableName) {
     return make_shared<Constant>(0.0);
+}
+
+ostream& Constant::formatOutput(ostream& out) const {
+    out << "(" << getValue() << ")";
+    return out;
+}
+
+double Constant::getValue() const {
+    return value;
 }

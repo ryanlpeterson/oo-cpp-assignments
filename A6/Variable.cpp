@@ -25,9 +25,18 @@ double Variable::Evaluate() {
     return getVariableValue(name);
 }
 
-std::shared_ptr<Tree> Variable::Derivative(std::string variableName) {
+shared_ptr<Tree> Variable::Derivative(string variableName) {
     if (variableName == name) {
         return make_shared<Constant>(1.0);
     }
     return make_shared<Constant>(0.0);
+}
+
+ostream& Variable::formatOutput(ostream& out) const {
+    out << "(" << getName() << ")";
+    return out;
+}
+
+string Variable::getName() const {
+    return name;
 }

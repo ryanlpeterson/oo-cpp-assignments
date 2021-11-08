@@ -5,6 +5,9 @@
  * Due: 10/31/2021
  **/
 
+#ifndef VARIABLE_H
+#define VARIABLE_H
+
 #include "Tree.h"
 
 class Variable : public Tree
@@ -18,7 +21,12 @@ class Variable : public Tree
 
         std::shared_ptr<Tree> Derivative(std::string variableName);
 
+        std::ostream& formatOutput(std::ostream& out) const;
+
+        std::string getName() const;
+
     private:
         std::string name;
         // will NOT use left and right Trees
 };
+#endif

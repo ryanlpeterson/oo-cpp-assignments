@@ -26,7 +26,7 @@ Add::Add(Tree* p1, Tree* p2)
 }
 */
 
-Divide::Divide(std::shared_ptr<Tree> left, std::shared_ptr<Tree> right) :
+Divide::Divide(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)
 {
 }
@@ -35,7 +35,7 @@ double Divide::Evaluate() {
     return getLeftTree()->Evaluate() / getRightTree()->Evaluate();
 }
 
-std::shared_ptr<Tree> Divide::Derivative(std::string variableName) {
+shared_ptr<Tree> Divide::Derivative(string variableName) {
     shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
     shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
     shared_ptr<Multiply> vv = make_shared<Multiply>(getRightTree(), getRightTree());
@@ -43,4 +43,13 @@ std::shared_ptr<Tree> Divide::Derivative(std::string variableName) {
     shared_ptr<Subtract> numerator = make_shared<Subtract>(vdu, udv);
 
     return make_shared<Divide>(numerator, vv);
+}
+
+ostream& Divide::formatOutput(ostream& out) const {
+    out << "(";
+    getLeftTree()->formatOutput(out);
+    out << " / ";
+    getRightTree()->formatOutput(out);
+    out << ")";
+    return out;
 }

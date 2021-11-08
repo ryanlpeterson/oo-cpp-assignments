@@ -23,7 +23,7 @@ Add::Add(Tree* p1, Tree* p2)
 }
 */
 
-Subtract::Subtract(std::shared_ptr<Tree> left, std::shared_ptr<Tree> right) :
+Subtract::Subtract(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)
 {
 }
@@ -32,6 +32,15 @@ double Subtract::Evaluate() {
     return getLeftTree()->Evaluate() - getRightTree()->Evaluate();
 }
 
-std::shared_ptr<Tree> Subtract::Derivative(std::string variableName) {
+shared_ptr<Tree> Subtract::Derivative(string variableName) {
     return make_shared<Subtract>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
+}
+
+ostream& Subtract::formatOutput(ostream& out) const {
+    out << "(";
+    getLeftTree()->formatOutput(out);
+    out << " - ";
+    getRightTree()->formatOutput(out);
+    out << ")";
+    return out;
 }

@@ -21,8 +21,13 @@ Tree::Tree(const Tree& left, const Tree& right) :
 {
 }
 
-Tree::Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2) :
-    left (p1), right(p2)
+Tree::Tree(Tree* left, Tree* right) :
+    left(left), right(right)
+{
+}
+
+Tree::Tree(shared_ptr<Tree> left, shared_ptr<Tree> right) :
+    left (left), right (right)
 {
 }
 
@@ -34,16 +39,21 @@ double Tree::Evaluate() {
     return 0.0;
 }
 
-std::shared_ptr<Tree> Tree::Derivative(std::string variableName) {
+shared_ptr<Tree> Tree::Derivative(string variableName) {
     return clone();
 }
 
-shared_ptr<Tree> Tree::getLeftTree() {
+shared_ptr<Tree> Tree::getLeftTree() const {
     return left;
 }
 
-shared_ptr<Tree> Tree::getRightTree() {
+shared_ptr<Tree> Tree::getRightTree() const {
     return right;
+}
+
+ostream& Tree::formatOutput(ostream& out) const {
+    out << "...tree...";
+    return out;
 }
 
 void Tree::setVariableValue(string name, double value) {
@@ -52,4 +62,8 @@ void Tree::setVariableValue(string name, double value) {
 
 double Tree::getVariableValue(string name) {
     return symbolTable.at(name);
+}
+
+ostream& operator<<(ostream& out, const Tree& tree) {
+    return tree.formatOutput(out);
 }

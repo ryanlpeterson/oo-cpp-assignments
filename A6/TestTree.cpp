@@ -17,24 +17,31 @@ using namespace std;
 
 int main()
 {
-    Tree* t = new Add(make_shared<Constant>(1.2), make_shared<Variable>("X"));
+    Tree* tptr = new Add(new Constant(1.5), new Constant(1.0));
+    cout << tptr->Evaluate() << endl;
+    
+
+    shared_ptr<Add> t = make_shared<Add>(make_shared<Constant>(1.2), make_shared<Variable>("X"));
+    //Tree* t = new Add(new Constant(1.2), new Variable("X"));
 
     t->setVariableValue("X", 1.0);
 
     t->setVariableValue("Z", 3.3);
 
-    //make_shared<Tree> dt = t->Derivative("X");
+    cout << *t << endl;
 
     cout << "Evaluate t (1.2 + 1.0) " << t->Evaluate() << endl;
 
     cout << "Derivative of X " << t->Derivative("X")->Evaluate() << endl;
 
     cout << "Derivative of Z " <<  t->Derivative("Z")->Evaluate() << endl;
-
+    
 
     Tree* t2 = new Subtract(make_shared<Constant>(7.8), make_shared<Variable>("Y"));
 
     t2->setVariableValue("Y", 4.2);
+
+    cout << *t2 << endl;
 
     cout << "Evaluate t2 (7.8 - 4.2) " << t2->Evaluate() << endl;
     
@@ -55,6 +62,8 @@ int main()
 
     t3->setVariableValue("Q", 9.2);
 
+    cout << *t3 << endl;
+
     cout << "Evaluate t3 (3.7 * (9.2)) " << t3->Evaluate() << endl;
     
     cout << "Derivative of Q " << t3->Derivative("Q")->Evaluate() << endl;
@@ -63,6 +72,8 @@ int main()
     Tree* t4 = new Divide(make_shared<Constant>(3.0), make_shared<Variable>("R"));
 
     t4->setVariableValue("R", 2.0);
+
+    cout << *t4 << endl;
 
     cout << "Evaluate t3 (3.0 / (2.0)) " << t4->Evaluate() << endl;
 
@@ -80,12 +91,16 @@ int main()
     t5->setVariableValue("Y", 3.0);
     t5->setVariableValue("Z", 5.0);
 
+    cout << *t5 << endl;
+
     cout << "variable values " << t5->getVariableValue("X") << ", " << t5->getVariableValue("Y") << ", " << t5->getVariableValue("Z") << endl;
 
     cout << "Evaluate t5 (assignment desc) " << t5->Evaluate() << endl;
 
+    cout << *(t5->Derivative("X")) << endl;
+
     cout << "Derivative of X " << t5->Derivative("X")->Evaluate() << endl;
 
-    t = NULL;
-    delete t;
+    //t = NULL;
+    //delete t;
 }

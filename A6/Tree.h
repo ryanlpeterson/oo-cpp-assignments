@@ -19,6 +19,8 @@ class Tree
 
         Tree(const Tree& left, const Tree& right);
 
+        Tree(Tree* left, Tree* right);
+
         Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
 
         virtual ~Tree() {};
@@ -29,14 +31,11 @@ class Tree
 
         virtual std::shared_ptr<Tree> Derivative(std::string variableName);
 
-        // friend allows access to private variables and makes function a non-member
-        // access to private variables is necessary for constructing output
-        // non-member function is necessary because tree needs to be the right operand
-        //friend ostream& operator<<(ostream& out, const Tree& tree);
+        std::shared_ptr<Tree> getLeftTree() const;
 
-        std::shared_ptr<Tree> getLeftTree();
+        std::shared_ptr<Tree> getRightTree() const;
 
-        std::shared_ptr<Tree> getRightTree();
+        virtual std::ostream& formatOutput(std::ostream& out) const;
 
         static void setVariableValue(std::string name, double value);
 
@@ -48,4 +47,8 @@ class Tree
 
         static std::map<std::string, double> symbolTable;
 };
+
+// non-member function is necessary because tree needs to be the right operand
+std::ostream& operator<<(std::ostream& out, const Tree& tree);
+
 #endif
