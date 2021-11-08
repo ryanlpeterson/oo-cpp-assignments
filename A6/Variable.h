@@ -13,18 +13,22 @@
 class Variable : public Tree
 {
     public:
+        // ctor that accepts the variable name
         Variable(std::string name);
 
+        // implementations for Tree pure virtual functions
+        // returns the value set for the variable
         double Evaluate();
-
+        // returns the derivative of the variable w.r.t to the given variable name
         std::shared_ptr<Tree> Derivative(std::string variableName);
-
+        // outputs the variable's name to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 
+        // returns the variable's name
         std::string getName() const;
 
     private:
         std::string name;
-        // will NOT use left and right Trees
+        // does not use left and right Trees
 };
 #endif

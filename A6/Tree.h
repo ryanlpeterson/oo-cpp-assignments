@@ -16,35 +16,35 @@ class Tree
     public:
         // default ctor
         Tree();
-
+        // ctor that accepts two raw tree pointers
         Tree(Tree* left, Tree* right);
-
+        // ctor that accepts two tree shared_ptrs
         Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
+        // default dtor, virtual because there are other virtual functions
+        virtual ~Tree();
 
-        virtual ~Tree() {};
-        
-        virtual double Evaluate();
-
-        virtual std::shared_ptr<Tree> Derivative(std::string variableName);
-
+        // get sub-trees
         std::shared_ptr<Tree> getLeftTree() const;
-
         std::shared_ptr<Tree> getRightTree() const;
+        
+        // pure virtual functions that need implemented by derived classes
+        virtual double Evaluate() = 0;
+        virtual std::shared_ptr<Tree> Derivative(std::string variableName) = 0;
+        virtual std::ostream& formatOutput(std::ostream& out) const = 0;
 
-        virtual std::ostream& formatOutput(std::ostream& out) const;
-
+        // static functions to set and get values in the symbol table
         static void setVariableValue(std::string name, double value);
-
         static double getVariableValue(std::string name);
 
     private:
+        // sub-trees
         std::shared_ptr<Tree> left;
         std::shared_ptr<Tree> right;
-
+        // symbol table that maps variable name to its value
         static std::map<std::string, double> symbolTable;
 };
 
-// non-member function is necessary because tree needs to be the right operand
+// operator<< for streaming out the tree, non-member because tree needs to be the right operand
 std::ostream& operator<<(std::ostream& out, const Tree& tree);
 
 #endif

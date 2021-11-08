@@ -13,18 +13,22 @@
 class Constant : public Tree
 {
     public:
+        // ctor that accepts a double value
         Constant(double value);
 
+        // implementations for Tree pure virtual functions
+        // returns the constant's value
         double Evaluate();
-
+        // returns 0
         std::shared_ptr<Tree> Derivative(std::string variableName);
-
+        // outputs the constant's value to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 
+        // returns the constant's value
         double getValue() const;
 
     private:
         double value;
-        // will NOT use left and right Trees
+        // does not use left and right Trees
 };
 #endif
