@@ -23,14 +23,14 @@ Subtract::Subtract(shared_ptr<Tree> left, shared_ptr<Tree> right) :
 
 // subtracts the results of Evaluate called on the two sub-trees
 // left - right
-double Subtract::Evaluate() {
+double Subtract::Evaluate() const {
     return getLeftTree()->Evaluate() - getRightTree()->Evaluate();
 }
 
 // subtracts the results of Derivative called on the two sub-trees
 // returns a shared_ptr to the updated expression
 // left' - right'
-shared_ptr<Tree> Subtract::Derivative(string variableName) {
+shared_ptr<Tree> Subtract::Derivative(string variableName) const {
     return make_shared<Subtract>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
 }
 

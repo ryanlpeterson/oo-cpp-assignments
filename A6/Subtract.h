@@ -20,9 +20,9 @@ class Subtract: public Tree
 
         // implementations for Tree pure virtual functions
         // subtracts the results of Evaluate called on the two sub-trees
-        double Evaluate();
+        double Evaluate() const;
         // subtracts the results of Derivative called on the two sub-trees
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the subtraction expression to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 

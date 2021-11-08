@@ -4,7 +4,8 @@
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 10/31/2021
  * Description: Abstract class that implements an expression tree. Interior nodes
- *  are arithmetic expressions and leaves are constants or variables.
+ *  are arithmetic expressions and leaves are constants or variables. Supports
+ *  evaluation and derivation.
  **/
 
 #include "Tree.h"

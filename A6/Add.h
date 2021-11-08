@@ -20,9 +20,9 @@ class Add: public Tree
 
         // implementations for Tree pure virtual functions
         // adds together the results of Evaluate called on the two sub-trees
-        double Evaluate();
+        double Evaluate() const;
         // adds together the results of Derivative called on the two sub-trees
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the addition expression to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 

@@ -23,14 +23,14 @@ Add::Add(shared_ptr<Tree> left, shared_ptr<Tree> right) :
 
 // adds together the results of Evaluate called on the two sub-trees
 // left + right
-double Add::Evaluate() {
+double Add::Evaluate() const {
     return getLeftTree()->Evaluate() + getRightTree()->Evaluate();
 }
 
 // adds together the results of Derivative called on the two sub-trees
 // returns a shared_ptr to the updated expression
 // left' + right'
-shared_ptr<Tree> Add::Derivative(string variableName) {
+shared_ptr<Tree> Add::Derivative(string variableName) const {
     return make_shared<Add>(getLeftTree()->Derivative(variableName), getRightTree()->Derivative(variableName));
 }
 

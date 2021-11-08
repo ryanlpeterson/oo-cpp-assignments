@@ -18,9 +18,9 @@ class Constant : public Tree
 
         // implementations for Tree pure virtual functions
         // returns the constant's value
-        double Evaluate();
+        double Evaluate() const;
         // returns 0
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the constant's value to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 

@@ -25,14 +25,14 @@ Divide::Divide(shared_ptr<Tree> left, shared_ptr<Tree> right) :
 }
 
 // divides the results of Evaluate called on the two sub-trees
-double Divide::Evaluate() {
+double Divide::Evaluate() const {
     return getLeftTree()->Evaluate() / getRightTree()->Evaluate();
 }
 
 // executes the derivative of the division expression
 // returns a shared_ptr to the updated expression
 // ((right * left') - (left * right')) / (right * right)
-shared_ptr<Tree> Divide::Derivative(string variableName) {
+shared_ptr<Tree> Divide::Derivative(string variableName) const {
     shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
     shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
     shared_ptr<Multiply> vv = make_shared<Multiply>(getRightTree(), getRightTree());

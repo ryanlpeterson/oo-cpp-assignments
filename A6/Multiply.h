@@ -20,9 +20,9 @@ class Multiply: public Tree
 
         // implementations for Tree pure virtual functions
         // multiplies the results of Evaluate called on the two sub-trees
-        double Evaluate();
+        double Evaluate() const;
         // executes the derivative of the multiplication expression
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the multiplication expression to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 

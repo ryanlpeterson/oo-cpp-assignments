@@ -19,14 +19,14 @@ Variable::Variable(string name) :
 
 // returns the value set for the variable
 // throws out_of_range exception if Tree symbolTable does not have entry for this variable's name
-double Variable::Evaluate() {
+double Variable::Evaluate() const {
     return getVariableValue(name);
 }
 
 // returns the derivative of the variable w.r.t to the given variable name
 // if deriving w.r.t. to this variable, return 1
 // otherwise return 0
-shared_ptr<Tree> Variable::Derivative(string variableName) {
+shared_ptr<Tree> Variable::Derivative(string variableName) const {
     if (variableName == name) {
         return make_shared<Constant>(1.0);
     }

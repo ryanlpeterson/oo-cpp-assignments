@@ -18,9 +18,9 @@ class Variable : public Tree
 
         // implementations for Tree pure virtual functions
         // returns the value set for the variable
-        double Evaluate();
+        double Evaluate() const;
         // returns the derivative of the variable w.r.t to the given variable name
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the variable's name to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 

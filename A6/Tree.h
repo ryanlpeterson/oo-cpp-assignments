@@ -28,8 +28,8 @@ class Tree
         std::shared_ptr<Tree> getRightTree() const;
         
         // pure virtual functions that need implemented by derived classes
-        virtual double Evaluate() = 0;
-        virtual std::shared_ptr<Tree> Derivative(std::string variableName) = 0;
+        virtual double Evaluate() const = 0;
+        virtual std::shared_ptr<Tree> Derivative(std::string variableName) const = 0;
         virtual std::ostream& formatOutput(std::ostream& out) const = 0;
 
         // static functions to set and get values in the symbol table

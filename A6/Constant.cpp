@@ -16,13 +16,13 @@ Constant::Constant(double value) :
 }
 
 // returns the constant's value
-double Constant::Evaluate() {
+double Constant::Evaluate() const {
     return value;
 }
 
 // returns 0
 // variableName is unused in this instance
-shared_ptr<Tree> Constant::Derivative(string variableName) {
+shared_ptr<Tree> Constant::Derivative(string variableName) const {
     return make_shared<Constant>(0.0);
 }
 

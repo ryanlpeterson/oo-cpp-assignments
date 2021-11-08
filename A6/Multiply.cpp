@@ -24,14 +24,14 @@ Multiply::Multiply(shared_ptr<Tree> left, shared_ptr<Tree> right) :
 
 // multiplies the results of Evaluate called on the two sub-trees
 // left * right
-double Multiply::Evaluate() {
+double Multiply::Evaluate() const {
     return getLeftTree()->Evaluate() * getRightTree()->Evaluate();
 }
 
 // executes the derivative of the multiplication expression
 // returns a shared_ptr to the updated expression
 // (left * right') + (right * left')
-shared_ptr<Tree> Multiply::Derivative(string variableName) {
+shared_ptr<Tree> Multiply::Derivative(string variableName) const {
     shared_ptr<Multiply> udv = make_shared<Multiply>(getLeftTree(), getRightTree()->Derivative(variableName));
     shared_ptr<Multiply> vdu = make_shared<Multiply>(getRightTree(), getLeftTree()->Derivative(variableName));
 

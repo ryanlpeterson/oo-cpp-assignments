@@ -20,9 +20,9 @@ class Divide: public Tree
 
         // implementations for Tree pure virtual functions
         // divides the results of Evaluate called on the two sub-trees
-        double Evaluate();
+        double Evaluate() const;
         // executes the derivative of the division expression
-        std::shared_ptr<Tree> Derivative(std::string variableName);
+        std::shared_ptr<Tree> Derivative(std::string variableName) const;
         // outputs the division expression to the ostream
         std::ostream& formatOutput(std::ostream& out) const;
 
