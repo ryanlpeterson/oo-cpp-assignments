@@ -10,19 +10,10 @@
 #include "Add.h"
 using namespace std;
 
-// calls Tree ctor
-Multiply::Multiply(const Tree& left, const Tree& right) :
+Multiply::Multiply(Tree* left, Tree* right) :
     Tree::Tree(left, right)
 {
 }
-
-/*
-Add::Add(Tree* p1, Tree* p2)
-{
-    this->left = make_shared<Tree>(*p1);
-    this->right = make_shared<Tree>(*p2);
-}
-*/
 
 Multiply::Multiply(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)

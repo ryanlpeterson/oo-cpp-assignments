@@ -9,18 +9,10 @@
 #include "Add.h"
 using namespace std;
 
-// calls Tree ctor
-Add::Add(const Tree& left, const Tree& right) :
-    Tree::Tree(left, right)
-{
-}
-
-
 Add::Add(Tree* left, Tree* right) :
     Tree::Tree(left, right)
 {
 }
-
 
 Add::Add(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)

@@ -12,19 +12,10 @@
 #include "Subtract.h"
 using namespace std;
 
-// calls Tree ctor
-Divide::Divide(const Tree& left, const Tree& right) :
+Divide::Divide(Tree* left, Tree* right) :
     Tree::Tree(left, right)
 {
 }
-
-/*
-Add::Add(Tree* p1, Tree* p2)
-{
-    this->left = make_shared<Tree>(*p1);
-    this->right = make_shared<Tree>(*p2);
-}
-*/
 
 Divide::Divide(shared_ptr<Tree> left, shared_ptr<Tree> right) :
     Tree::Tree(left, right)

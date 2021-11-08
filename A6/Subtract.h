@@ -13,13 +13,9 @@
 class Subtract: public Tree
 {
     public:
-        Subtract(const Tree& left, const Tree& right);
-
         Subtract(Tree* left, Tree* right);
 
         Subtract(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
-
-        // clone implemented by Tree is good
 
         double Evaluate();
 

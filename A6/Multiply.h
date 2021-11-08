@@ -13,13 +13,9 @@
 class Multiply: public Tree
 {
     public:
-        Multiply(const Tree& left, const Tree& right);
-
         Multiply(Tree* left, Tree* right);
 
         Multiply(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
-
-        // clone implemented by Tree is good
 
         double Evaluate();
 

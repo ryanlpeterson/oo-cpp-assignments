@@ -16,10 +16,6 @@ Variable::Variable(string name) :
 {
 }
 
-shared_ptr<Tree> Variable::clone() {
-    return make_shared<Variable>(name);
-}
-
 double Variable::Evaluate() {
     // potentially throws out_of_range exception if symbolTable does not have entry for this variable's name
     return getVariableValue(name);

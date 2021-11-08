@@ -15,8 +15,6 @@ class Variable : public Tree
     public:
         Variable(std::string name);
 
-        std::shared_ptr<Tree> clone();
-
         double Evaluate();
 
         std::shared_ptr<Tree> Derivative(std::string variableName);

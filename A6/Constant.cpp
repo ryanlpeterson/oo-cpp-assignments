@@ -15,10 +15,6 @@ Constant::Constant(double value) :
 {
 }
 
-shared_ptr<Tree> Constant::clone() {
-    return make_shared<Constant>(value);
-}
-
 double Constant::Evaluate() {
     return value;
 }

@@ -17,15 +17,11 @@ class Tree
         // default ctor
         Tree();
 
-        Tree(const Tree& left, const Tree& right);
-
         Tree(Tree* left, Tree* right);
 
         Tree(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
 
         virtual ~Tree() {};
-
-        std::shared_ptr<Tree> clone();
         
         virtual double Evaluate();
 

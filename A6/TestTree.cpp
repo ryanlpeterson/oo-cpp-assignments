@@ -17,90 +17,90 @@ using namespace std;
 
 int main()
 {
-    Tree* tptr = new Add(new Constant(1.5), new Constant(1.0));
-    cout << tptr->Evaluate() << endl;
-    
-
-    shared_ptr<Add> t = make_shared<Add>(make_shared<Constant>(1.2), make_shared<Variable>("X"));
-    //Tree* t = new Add(new Constant(1.2), new Variable("X"));
-
+    // 1. Addition simple case
+    Tree* t = new Add(new Constant(1.2), new Variable("X"));
     t->setVariableValue("X", 1.0);
 
-    t->setVariableValue("Z", 3.3);
+    cout << "Expression: " <<  *t << endl;
+    cout << "X = " << t->getVariableValue("X") << endl;
 
-    cout << *t << endl;
+    cout << "Evaluated: " << t->Evaluate() << endl;
 
-    cout << "Evaluate t (1.2 + 1.0) " << t->Evaluate() << endl;
+    cout << "Derivative w.r.t. X: " << *(t->Derivative("X")) << endl;
+    cout << "Derivative Evaluated: " << t->Derivative("X")->Evaluate() << endl;
 
-    cout << "Derivative of X " << t->Derivative("X")->Evaluate() << endl;
-
-    cout << "Derivative of Z " <<  t->Derivative("Z")->Evaluate() << endl;
+    cout << endl;
+    delete t;
     
 
-    Tree* t2 = new Subtract(make_shared<Constant>(7.8), make_shared<Variable>("Y"));
+    // 2. Subtraction simple case
+    t = new Subtract(new Constant(7.8), new Variable("Y"));
+    t->setVariableValue("Y", 4.2);
 
-    t2->setVariableValue("Y", 4.2);
+    cout << "Expression: " << *t << endl;
+    cout << "Y = " << t->getVariableValue("Y") << endl;
 
-    cout << *t2 << endl;
+    cout << "Evaluated: " << t->Evaluate() << endl;
 
-    cout << "Evaluate t2 (7.8 - 4.2) " << t2->Evaluate() << endl;
-    
-    cout << "Derivative of Y " << t2->Derivative("Y")->Evaluate() << endl;
+    cout << "Derivative w.r.t. Y: " << *(t->Derivative("Y")) << endl;
+    cout << "Derivative Evaluated: " << t->Derivative("Y")->Evaluate() << endl;
 
-
-    /*
-    Tree* constant = new Constant(3.7);
-    cout << "Evaluate of 3.7 " << constant->Evaluate() << endl;
-    shared_ptr<Tree> constant2 = make_shared<Constant>(3.7);
-    cout << "Evaluate of 3.7 " << constant2->Evaluate() << endl;
-    shared_ptr<Tree> constant3 = constant2->clone();
-    cout << "Evaluate of 3.7 " << constant3->Evaluate() << endl;
-    */
+    cout << endl;
+    delete t;
 
 
-    Tree* t3 = new Multiply(make_shared<Constant>(3.7), make_shared<Variable>("Q"));
+    // 3. Multiplication simple case
+    t = new Multiply(new Constant(3.7), new Variable("Z"));
+    t->setVariableValue("Z", 9.2);
 
-    t3->setVariableValue("Q", 9.2);
+    cout << "Expression: " << *t << endl;
+    cout << "Z = " << t->getVariableValue("Z") << endl;
 
-    cout << *t3 << endl;
+    cout << "Evaluated: " << t->Evaluate() << endl;
 
-    cout << "Evaluate t3 (3.7 * (9.2)) " << t3->Evaluate() << endl;
-    
-    cout << "Derivative of Q " << t3->Derivative("Q")->Evaluate() << endl;
+    cout << "Derivative w.r.t. Z: " << *(t->Derivative("Z")) << endl;
+    cout << "Derivative Evaluated: " << t->Derivative("Z")->Evaluate() << endl;
 
-
-    Tree* t4 = new Divide(make_shared<Constant>(3.0), make_shared<Variable>("R"));
-
-    t4->setVariableValue("R", 2.0);
-
-    cout << *t4 << endl;
-
-    cout << "Evaluate t3 (3.0 / (2.0)) " << t4->Evaluate() << endl;
-
-    cout << "Derivative of R " << t4->Derivative("R")->Evaluate() << endl;
+    cout << endl;
+    delete t;
 
 
+    // 4. Dividision simple case
+    t = new Divide(new Constant(3.0), new Variable("W"));
+    t->setVariableValue("W", 2.0);
 
-    Tree* t5 = new Add(
-        make_shared<Multiply>(make_shared<Constant>(2.3), make_shared<Variable>("X")),
-        make_shared<Multiply>(
-            make_shared<Variable>("Y"),
-            make_shared<Subtract>(make_shared<Variable>("Z"), make_shared<Variable>("X"))));
+    cout << "Expression: " << *t << endl;
+    cout << "W = " << t->getVariableValue("W") << endl;
 
-    t5->setVariableValue("X", 2.0);
-    t5->setVariableValue("Y", 3.0);
-    t5->setVariableValue("Z", 5.0);
+    cout << "Evaluated: " << t->Evaluate() << endl;
 
-    cout << *t5 << endl;
+    cout << "Derivative w.r.t. W: " << *(t->Derivative("W")) << endl;
+    cout << "Derivative Evaluated: " << t->Derivative("W")->Evaluate() << endl;
 
-    cout << "variable values " << t5->getVariableValue("X") << ", " << t5->getVariableValue("Y") << ", " << t5->getVariableValue("Z") << endl;
+    cout << endl;
+    delete t;
 
-    cout << "Evaluate t5 (assignment desc) " << t5->Evaluate() << endl;
+    // 5. Complex case
+    t = new Add(
+        new Multiply(new Constant(2.3), new Variable("X")),
+        new Multiply(
+            new Variable("Y"),
+            new Subtract(new Variable("Z"), new Variable("X"))));
 
-    cout << *(t5->Derivative("X")) << endl;
+    t->setVariableValue("X", 2.0);
+    t->setVariableValue("Y", 3.0);
+    t->setVariableValue("Z", 5.0);
 
-    cout << "Derivative of X " << t5->Derivative("X")->Evaluate() << endl;
+    cout << "Expression: " << *t << endl;
+    cout << "X = " << t->getVariableValue("X") << endl;
+    cout << "Y = " << t->getVariableValue("Y") << endl;
+    cout << "Z = " << t->getVariableValue("Z") << endl;
 
-    //t = NULL;
-    //delete t;
+    cout << "Evaluated: " << t->Evaluate() << endl;
+
+    cout << "Derivative w.r.t. X: " << *(t->Derivative("X")) << endl;
+    cout << "Derivative Evaluated: " << t->Derivative("X")->Evaluate() << endl;
+
+    cout << endl;
+    delete t;
 }

@@ -15,8 +15,6 @@ class Constant : public Tree
     public:
         Constant(double value);
 
-        std::shared_ptr<Tree> clone();
-
         double Evaluate();
 
         std::shared_ptr<Tree> Derivative(std::string variableName);

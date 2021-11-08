@@ -13,13 +13,9 @@
 class Add: public Tree
 {
     public:
-        Add(const Tree& left, const Tree& right);
-
         Add(Tree* left, Tree* right);
 
         Add(std::shared_ptr<Tree> p1, std::shared_ptr<Tree> p2);
-
-        // clone implemented by Tree is good
 
         double Evaluate();
 

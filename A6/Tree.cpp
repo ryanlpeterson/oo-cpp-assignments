@@ -16,11 +16,6 @@ Tree::Tree()
 {
 }
 
-Tree::Tree(const Tree& left, const Tree& right) :
-    left (make_shared<Tree>(left)), right (make_shared<Tree>(right))
-{
-}
-
 Tree::Tree(Tree* left, Tree* right) :
     left(left), right(right)
 {
@@ -31,16 +26,12 @@ Tree::Tree(shared_ptr<Tree> left, shared_ptr<Tree> right) :
 {
 }
 
-shared_ptr<Tree> Tree::clone() {
-   return make_shared<Tree>(left->clone(), right->clone());
-}
-
 double Tree::Evaluate() {
     return 0.0;
 }
 
 shared_ptr<Tree> Tree::Derivative(string variableName) {
-    return clone();
+    return make_shared<Tree>(*this);
 }
 
 shared_ptr<Tree> Tree::getLeftTree() const {
