@@ -37,6 +37,8 @@ class Floor
 
         void tickWaitTimeForPassengers();
 
+        double getAverageWaitTime();
+
     private:
     
         // current floor number

@@ -159,6 +159,7 @@ void Elevator::update()
                         break;
                     }
                 }
+
                 // find any closest floor below that summoned an elevator
                 for (int floorNum = curFloorNum - 1; floorNum >= 0; floorNum--) {
                     if (floorsWithWaitingPassengers[floorNum]) {
@@ -202,26 +203,29 @@ void Elevator::update()
         }
         // MOVING_UP
         else if (state == MOVING_UP) {
+            cout << "state moving up" << endl;
             curFloorNum++;
 
             // determine if the floor newly arrived to is a target floor, if so stop
             if (destFloorsUp.find(curFloorNum) != destFloorsUp.end() || floorsWithWaitingPassengers[curFloorNum]) {
-                state == STOPPING;
+                state = STOPPING;
             }
             // else, must not have been a target floor, keep MOVING_UP
         }
         // MOVING_DOWN
         else if (state == MOVING_DOWN) {
+            cout << "state moving down" << endl;
             curFloorNum--;
 
             // determine if the floor newly arrived to is a target floor, if so stop
             if (destFloorsDown.find(curFloorNum) != destFloorsDown.end() || floorsWithWaitingPassengers[curFloorNum]) {
-                state == STOPPING;
+                state = STOPPING;
             }
             // else, must not have been a target floor, keep MOVING_DOWN
         }
         // STOPPING
         else if (state == STOPPING) {
+            cout << "state stopping" << endl;
             state = STOPPED;
         }
 
@@ -229,19 +233,23 @@ void Elevator::update()
         curTime = 0;
         // update goal time based on new state
         if (state == STOPPED) {
+            cout << "update goal time stopped" << endl;
             goalTime = 0;
         }
         else if (state == MOVING_UP) {
+            cout << "update goal time moving up" << endl;
             goalTime = 10;
             // also remember what will later be previous direction
             prevDirectionWasUp = true;
         }
         else if (state == MOVING_DOWN) {
+            cout << "update goal time moving down" << endl;
             goalTime = 10;
             // also remember what will later be previous direction
             prevDirectionWasUp = false;
         }
         else if (state == STOPPING) {
+            cout << "update goal time stopping" << endl;
             goalTime = 2;
         }
     }

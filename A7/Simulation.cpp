@@ -104,7 +104,7 @@ int main() {
     array<Elevator, 4> elevators = { Elevator(NUM_FLOORS), Elevator(NUM_FLOORS), Elevator(NUM_FLOORS), Elevator(NUM_FLOORS)};
 
     // init floors
-    array<Floor, NUM_FLOORS> floors {};
+    array<Floor, NUM_FLOORS> floors;
     for (int floorNum = 0; floorNum < NUM_FLOORS; floorNum++) {
         floors[floorNum] = Floor(floorNum);
     }
@@ -113,7 +113,10 @@ int main() {
     vector<Passenger> donePassengers (notYetStartedPassengers.size());
 
     int curTime = 0;
-    while (!notYetStartedPassengers.empty()) {
+    int donePassengersCount = 0;
+    int totalNumPassengers = notYetStartedPassengers.size();
+    bool begin = false;
+    while (donePassengersCount < totalNumPassengers) {
         // 1.
         // check waiting passengers to grab any that have a start time that matches curTime
         //      only need to loop into waitingPassengers until passenger.startTime > curTime
@@ -124,13 +127,14 @@ int main() {
         // Iterate til the end of set
         while (it != notYetStartedPassengers.end()) {
             if (it->getStartTime() == curTime) {
-                cout << "===starting passenger" << endl;
+                cout << "===starting passenger===" << endl;
+                begin = true;
                 int newPassengerFloorNum = it->getStartFloorNum();
                 // add passenger to floor queue
                 floors[newPassengerFloorNum].pushPassenger(*it);
                 // let elevator's know that someone is at floor
-                for (Elevator elevator : elevators) {
-                    elevator.setSummonedAtFloor(newPassengerFloorNum, true);
+                for (int i = 0; i < elevators.size(); ++i) {
+                    elevators[i].setSummonedAtFloor(newPassengerFloorNum, true);
                 }
                 // remove passenger from waiting passengers list (erase returns iterator at position of element after that erased)
                 it = notYetStartedPassengers.erase(it);
@@ -159,28 +163,30 @@ int main() {
         // i.e. floor.popPassenger() and elevator.addPassenger()
         //      elevator will need to update its state information in addPassenger() (e.g. update its dest floors)
         //      if floor is now empty, update all elevators' floorsWithWaitingPassengers
-        for (Elevator elevator : elevators) {
-            if (elevator.isStopped()) {
+        for (int i = 0; i < elevators.size(); ++i) {
+            if (elevators[i].isStopped()) {
                 // 2a.
                 // offload passengers from the elevator
-                vector<Passenger> offloadedPassengers = elevator.offloadPassengers();
+                vector<Passenger> offloadedPassengers = elevators[i].offloadPassengers();
                 // add offloaded passengers to done passengers list
-                donePassengers.insert(donePassengers.end(), offloadedPassengers.begin(), offloadedPassengers.end());
-
+                if (offloadedPassengers.size() > 0) {
+                    donePassengers.insert(donePassengers.end(), offloadedPassengers.begin(), offloadedPassengers.end());
+                    donePassengersCount+= offloadedPassengers.size();
+                }
 
                 // 2b.
-                Floor elevatorCurFloor = floors[elevator.getCurFloorNum()];
-                while (elevatorCurFloor.hasWaitingPassengers() && !elevator.isAtCapacity()) {
+                Floor elevatorCurFloor = floors[elevators[i].getCurFloorNum()];
+                while (elevatorCurFloor.hasWaitingPassengers() && !elevators[i].isAtCapacity()) {
                     // pop from floor queue
                     Passenger passenger = elevatorCurFloor.popPassenger();
                     // add to elevator
-                    elevator.addPassenger(passenger);
+                    elevators[i].addPassenger(passenger);
                 }
 
                 // if floor is now empty, update all elevators' floorsWithWaitingPassengers
                 if (!elevatorCurFloor.hasWaitingPassengers()) {
-                    for (Elevator elevator : elevators) {
-                        elevator.setSummonedAtFloor(elevatorCurFloor.getFloorNum(), false);
+                    for (int i = 0; i < elevators.size(); ++i) {
+                        elevators[i].setSummonedAtFloor(elevatorCurFloor.getFloorNum(), false);
                     }
                 }
             }
@@ -190,14 +196,14 @@ int main() {
         // 3.
         // for each elevator, update its state
         // i.e. elevator.update()
-        for (Elevator elevator : elevators) {
-            elevator.update();
+        for (int i = 0; i < elevators.size(); ++i) {
+            elevators[i].update();
         }
 
         // 4.
         // tick wait time for passengers in floor queues
-        for (Floor floor : floors) {
-            floor.tickWaitTimeForPassengers();
+        for (int i = 0; i < floors.size(); ++i) {
+            floors[i].tickWaitTimeForPassengers();
         }
 
         // 5.
@@ -206,20 +212,27 @@ int main() {
         //      pull from floor queues, elevator passenger list, and list of done passengers
         //          pulling to get total wait time, total travel time, and number of passengers into the sim so far
 
+
+        cout << "Average wait time for passengers on each floor: [";
+        for (int i = 0; i < floors.size(); ++i) {
+            cout << i << ":" << floors[i].getAverageWaitTime() << ", ";
+        }
+        cout << "]" << endl;
+
         // for now just want to paint a picture of state
         // current sim second
         cout << "curTime: " << curTime << endl;
         // elevators
         cout << "Elevator curFloors: [";
-        for (Elevator elevator : elevators) {
-            cout << elevator.getCurFloorNum() << ", ";
+        for (int i = 0; i < elevators.size(); ++i) {
+            cout << elevators[i].getCurFloorNum() << ", ";
         }
         cout << "]" << endl;
         // floors
         cout << "Occupied floors: [";
-        for (Floor floor : floors) {
-            if (floor.hasWaitingPassengers()) {
-                cout << floor.getFloorNum() << ":" << floor.getNumWaitingPassengers() << ", ";
+        for (int i = 0; i < floors.size(); ++i) {
+            if (floors[i].hasWaitingPassengers()) {
+                cout << floors[i].getFloorNum() << ":" << floors[i].getNumWaitingPassengers() << ", ";
             }
         }
         cout << "]" << endl;
@@ -230,15 +243,6 @@ int main() {
 
         curTime++;
     }
-
-
-    /*
-    std::chrono::seconds interval(1);
-    for( int i = 0 ; i < 10 ; ++i ) {
-       std::cout << "tick!" << endl;
-       //std::this_thread::sleep_for(interval) ;
-    }
-    */
 
     return 0;
 }
