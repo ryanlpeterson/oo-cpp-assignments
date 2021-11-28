@@ -37,16 +37,12 @@ class Passenger
         // Constructor that takes start and end floor
         Passenger(int startTime, int startFloorNum, int endFloorNum);
 
-        int getStartTime();
-
-        // int getExitTime();
+        int getStartTime() const;
 
         void setStartTime(int startTime);
 
-        // void setExitTime(int exitTime);
-
         // Return the start floor number
-        int getStartFloorNum();
+        int getStartFloorNum() const;
 
         // Return the end floor number
         int getEndFloorNum() const;
@@ -68,16 +64,16 @@ class Passenger
         void tickTravelTime();
 
     private:
+        int startTime;
+
         // Start floor number
         int startFloorNum;
 
         // End floor number
         int endFloorNum;
-
-        int startTime;
         
-        int elapsedWaitTime;
-        int elapsedTravelTime;
+        int elapsedWaitTime = 0;
+        int elapsedTravelTime = 0;
 
         // Current status of the passenger
         //Status status;
@@ -85,22 +81,22 @@ class Passenger
 
 inline bool operator< (const Passenger& passenger1, const Passenger& passenger2)
 {
-    return passenger1.getEndFloorNum() < passenger2.getEndFloorNum();
+    return passenger1.getStartTime() < passenger2.getStartTime();
 }
 
 inline bool operator> (const Passenger& passenger1, const Passenger& passenger2)
 {
-    return passenger1.getEndFloorNum() > passenger2.getEndFloorNum();
+    return passenger1.getStartTime() > passenger2.getStartTime();
 }
 
 inline bool operator<= (const Passenger& passenger1, const Passenger& passenger2)
 {
-    return passenger1.getEndFloorNum() <= passenger2.getEndFloorNum();
+    return passenger1.getStartTime() <= passenger2.getStartTime();
 }
 
 inline bool operator>= (const Passenger& passenger1, const Passenger& passenger2)
 {
-    return passenger1.getEndFloorNum() >= passenger2.getEndFloorNum();
+    return passenger1.getStartTime() >= passenger2.getStartTime();
 }
 
 #endif

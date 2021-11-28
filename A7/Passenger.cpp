@@ -27,33 +27,36 @@ Passenger::Passenger(int startTime, int startFloorNum, int endFloorNum) :
 }
 
 // reurn the time the passenger boarded the elevator
-int Passenger::getStartTime() {
+int Passenger::getStartTime() const {
     return startTime;
 }
-
-// return the time the passenger exited the elevator
-// int Passenger::getExitTime() {
-//     return exitTime;
-// }
 
 // Set the time the passenger boarded the elevator
 void Passenger::setStartTime(int startTime) {
     startTime = startTime;
 }
 
-// Set the time the passenger exited the elevator
-// void Passenger::setExitTime(int startTime) {
-//     startTime = startTime;
-// }
-
 // Return the floor number the passenger started on
-int Passenger::getStartFloorNum() {
+int Passenger::getStartFloorNum() const {
     return startFloorNum;
 }
 
 // Return the floor number the passenger ended on
 int Passenger::getEndFloorNum() const {
     return endFloorNum;
+}
+
+int Passenger::getWaitTime() {
+    return elapsedWaitTime;
+}
+void Passenger::tickWaitTime() {
+    elapsedWaitTime++;
+}
+int Passenger::getTravelTime() {
+    return elapsedTravelTime;
+}
+void Passenger::tickTravelTime() {
+    elapsedTravelTime++;
 }
 
 // Set the status of the passenger and the appropriate time

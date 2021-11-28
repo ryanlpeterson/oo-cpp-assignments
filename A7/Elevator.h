@@ -35,18 +35,26 @@ class Elevator
         // Empty constructor
         Elevator(int numFloors);
 
+        bool isStopped();
+
+        bool isAtCapacity();
+
+        int getCurFloorNum();
+
         // Add passenger to the elevator
         void addPassenger(Passenger passenger);
 
         std::vector<Passenger> offloadPassengers();
 
+        void setSummonedAtFloor(int floorNum, bool summon);
+
         // Update the state and passengers
-        void Update();
+        void update();
 
     private:
     
         // Current floor number
-        int currFloorNum;
+        int curFloorNum = 0;
 
         std::vector<bool> floorsWithWaitingPassengers;
 
@@ -57,17 +65,20 @@ class Elevator
         std::set<int, less<int> > destFloorsDown;
 
         // Current time in the simulation
-        int curTime;
+        int curTime = 0;
 
         // Goal time of next floor
-        int goalTime;
+        int goalTime = 0;
 
         // Current elevator state
-        State state;
+        State state = STOPPED;
 
-        bool prevDirectionWasUp;
+        // Previous direction to break ties in deciding which direction to move
+        bool prevDirectionWasUp = true;
 
         // Current passengers riding in the elevator
         std::vector<Passenger> passengers;
+
+        static const int MAX_CAPACITY = 8;
 };
 #endif

@@ -9,7 +9,7 @@
 #define FLOOR_H
 
 #include "Passenger.h"
-#include <queue>
+#include <deque>
 
 class Floor
 {
@@ -19,7 +19,7 @@ class Floor
         Floor();
 
         // Constructor with parameter for floor number
-        Floor(int floorNum, std::queue<Passenger> passengers);
+        Floor(int floorNum);
 
         // Return the current floor number
         int getFloorNum();
@@ -27,8 +27,15 @@ class Floor
         // Set the current floor number
         void setFloorNum(int floorNum);
 
-        // begin at the first floor
-        static const int startFloor = 1;
+        void pushPassenger(const Passenger& passenger);
+
+        Passenger popPassenger();
+
+        bool hasWaitingPassengers();
+
+        int getNumWaitingPassengers();
+
+        void tickWaitTimeForPassengers();
 
     private:
     
@@ -36,6 +43,6 @@ class Floor
         int floorNum;
 
         // Queue of passengers waiting for the elevator
-        std::queue<Passenger> passengers;
+        std::deque<Passenger> passengers;
 };
 #endif
