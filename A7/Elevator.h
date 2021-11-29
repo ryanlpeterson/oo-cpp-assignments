@@ -37,9 +37,17 @@ class Elevator
 
         bool isStopped();
 
+        State getState();
+
         bool isAtCapacity();
 
         int getCurFloorNum();
+
+        int getNumPassengers();
+
+        int getTotalPassengerWaitTime();
+
+        int getTotalPassengerTravelTime();
 
         // Add passenger to the elevator
         void addPassenger(Passenger passenger);
@@ -51,7 +59,13 @@ class Elevator
         // Update the state and passengers
         void update();
 
+        void printPassengerInfo();
+
+        void printDestFloorInfo();
+
     private:
+
+        bool hasFloorToMoveTowards();
     
         // Current floor number
         int curFloorNum = 0;

@@ -35,9 +35,11 @@ class Floor
 
         int getNumWaitingPassengers();
 
+        int getTotalPassengerWaitTime();
+
         void tickWaitTimeForPassengers();
 
-        double getAverageWaitTime();
+        //double getAverageWaitTime();
 
     private:
     

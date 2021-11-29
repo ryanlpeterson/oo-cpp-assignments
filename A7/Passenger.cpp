@@ -20,7 +20,9 @@ Passenger::Passenger() :
 Passenger::Passenger(int startTime, int startFloorNum, int endFloorNum) :
     startTime(startTime),
     startFloorNum(startFloorNum),
-    endFloorNum(endFloorNum)
+    endFloorNum(endFloorNum),
+    elapsedWaitTime(0),
+    elapsedTravelTime(0)
     //status(Passenger::NOT_SET)
 {
     
