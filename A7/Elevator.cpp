@@ -196,7 +196,7 @@ void Elevator::update()
     //              if both destFloors are empty, look at closest floorsWithWaitingPassengers
     //                  if no floorsWithWaitingPassengers are true, just stay STOPPED
     // MOVING_UP / MOVING_DOWN
-    //      goal time: 10sec
+    //      goal time: <travelTimePerFloor>sec
     //      actions: tick travel time of all passengers onboard
     //      next state: STOPPING, or continue MOVING_UP/MOVING_DOWN
     //          update current floor, as we've reached a new floor
@@ -330,13 +330,13 @@ void Elevator::update()
         }
         else if (state == MOVING_UP) {
             //cout << "update goal time moving up" << endl;
-            goalTime = 10;
+            goalTime = travelTimePerFloor;
             // also remember what will later be previous direction
             prevDirectionWasUp = true;
         }
         else if (state == MOVING_DOWN) {
             //cout << "update goal time moving down" << endl;
-            goalTime = 10;
+            goalTime = travelTimePerFloor;
             // also remember what will later be previous direction
             prevDirectionWasUp = false;
         }

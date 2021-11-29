@@ -66,17 +66,3 @@ void Floor::tickWaitTimeForPassengers() {
         passengers[i].tickWaitTime();
     }
 }
-
-//double Floor::getAverageWaitTime() {
-//    int totalWaitTime = 0;
-//    double avg = 0;
-//    for (int i = 0; i < passengers.size(); ++i) {
-//        totalWaitTime += passengers[i].getWaitTime();
-//    }
-//
-//    if (passengers.size() > 0) {
-//        avg = totalWaitTime / passengers.size();
-//    }
-//    
-//    return avg;
-//}

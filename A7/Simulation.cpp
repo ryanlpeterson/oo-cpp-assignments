@@ -10,6 +10,7 @@
 #include "Floor.h"
 #include "Passenger.h"
 #include "Elevator.h"
+#include "Simulation.h"
 #include <chrono>
 #include <thread>
 #include <sstream>
@@ -18,14 +19,21 @@
 
 using namespace std;
 
-const int NUM_FLOORS = 100;
+Simulation::Simulation(int numFloors, int numElevators, int travelTimePerFloor, string simFileName) :
+    numFloors (numFloors),
+    numElevators (numElevators),
+    travelTimePerFloor (travelTimePerFloor),
+    simFileName (simFileName)
+{
 
-int main() {
+}
+
+void Simulation::execute() {
 
     vector<Passenger> notYetStartedPassengers;
 
     string line;
-    ifstream elevatorFile ("Elevators.csv");
+    ifstream elevatorFile (simFileName);
 
     bool firstLineRead = false;
 
@@ -82,11 +90,15 @@ int main() {
     sort(notYetStartedPassengers.begin(), notYetStartedPassengers.end());
 
     // init elevators
-    array<Elevator, 4> elevators = { Elevator(NUM_FLOORS, 10), Elevator(NUM_FLOORS, 10), Elevator(NUM_FLOORS, 10), Elevator(NUM_FLOORS, 10)};
+    vector<Elevator> elevators;
+    for (int i = 0; i < numElevators; i++) {
+        //elevators[i] = Elevator(numFloors, travelTimePerFloor);
+        elevators.push_back(Elevator(numFloors, travelTimePerFloor));
+    }
 
     // init floors
-    array<Floor, NUM_FLOORS> floors;
-    for (int floorNum = 0; floorNum < NUM_FLOORS; floorNum++) {
+    vector<Floor> floors (numFloors);
+    for (int floorNum = 0; floorNum < numFloors; floorNum++) {
         floors[floorNum] = Floor(floorNum);
     }
 
@@ -259,6 +271,4 @@ int main() {
 
         curTime++;
     }
-
-    return 0;
 }
