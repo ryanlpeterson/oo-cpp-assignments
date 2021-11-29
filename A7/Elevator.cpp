@@ -10,8 +10,9 @@
 using namespace std;
 
 // Empty constructor, set the start floor to 1
-Elevator::Elevator(int numFloors) :
-    floorsWithWaitingPassengers (numFloors)
+Elevator::Elevator(int numFloors, int travelTimePerFloor) :
+    floorsWithWaitingPassengers (numFloors),
+    travelTimePerFloor (travelTimePerFloor)
 {
     // might have to do floorsWithWaitingPassengers.reserve(numFloors) instead
     floorsWithWaitingPassengers.resize(numFloors);
@@ -139,21 +140,40 @@ void Elevator::printDestFloorInfo() {
     cout << "]";
 }
 
-bool Elevator::hasFloorToMoveTowards() {
-    // check if there are any dest floors set (i.e. there is a passenger)
-    if (destFloorsUp.size() > 0 || destFloorsDown.size() > 0) {
-        return true;
-    }
-
-    // if no dest floors are set, check if any floors are summoning an elevator
-    bool isAtLeastOneFloorWithWaitingPassenger = false;
-    for (int i = 0; i < floorsWithWaitingPassengers.size(); i++) {
-        if (floorsWithWaitingPassengers[i]) {
-            isAtLeastOneFloorWithWaitingPassenger = true;
-            break;
+bool Elevator::hasFloorToContinueMovingTowards() {
+    if (state == MOVING_UP) {
+        // check if there are any dest floors set (i.e. there is a passenger)
+        if (destFloorsUp.size() > 0) {
+            return true;
         }
+
+        // if no dest floors are set, check if any floors are summoning an elevator
+        bool isAtLeastOneFloorWithWaitingPassenger = false;
+        for (int i = curFloorNum + 1; i < floorsWithWaitingPassengers.size(); i++) {
+            if (floorsWithWaitingPassengers[i]) {
+                isAtLeastOneFloorWithWaitingPassenger = true;
+                break;
+            }
+        }
+        return isAtLeastOneFloorWithWaitingPassenger;
     }
-    return isAtLeastOneFloorWithWaitingPassenger;
+    else if (state == MOVING_DOWN) {
+        // check if there are any dest floors set (i.e. there is a passenger)
+        if (destFloorsDown.size() > 0) {
+            return true;
+        }
+
+        // if no dest floors are set, check if any floors are summoning an elevator
+        bool isAtLeastOneFloorWithWaitingPassenger = false;
+        for (int i = curFloorNum - 1; i >= 0; i--) {
+            if (floorsWithWaitingPassengers[i]) {
+                isAtLeastOneFloorWithWaitingPassenger = true;
+                break;
+            }
+        }
+        return isAtLeastOneFloorWithWaitingPassenger;
+    }
+    return false;
 }
 
 void Elevator::update()
@@ -278,7 +298,7 @@ void Elevator::update()
 
             // determine if the floor newly arrived to is a target floor, if so stop
             // also stop if there is no longer a floor to move towards (likely another elevator arrived to summoning floor first)
-            if (destFloorsUp.find(curFloorNum) != destFloorsUp.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToMoveTowards()) {
+            if (destFloorsUp.find(curFloorNum) != destFloorsUp.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToContinueMovingTowards()) {
                 state = STOPPING;
             }
             // else, must not have been a target floor, keep MOVING_UP
@@ -290,7 +310,7 @@ void Elevator::update()
 
             // determine if the floor newly arrived to is a target floor, if so stop
             // also stop if there is no longer a floor to move towards (likely another elevator arrived to summoning floor first)
-            if (destFloorsDown.find(curFloorNum) != destFloorsDown.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToMoveTowards()) {
+            if (destFloorsDown.find(curFloorNum) != destFloorsDown.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToContinueMovingTowards()) {
                 state = STOPPING;
             }
             // else, must not have been a target floor, keep MOVING_DOWN

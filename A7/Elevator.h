@@ -33,7 +33,7 @@ class Elevator
         };
 
         // Empty constructor
-        Elevator(int numFloors);
+        Elevator(int numFloors, int travelTimePerFloor);
 
         bool isStopped();
 
@@ -65,7 +65,10 @@ class Elevator
 
     private:
 
-        bool hasFloorToMoveTowards();
+        bool hasFloorToContinueMovingTowards();
+
+        // time it takes to move between floors, default to 10sec
+        int travelTimePerFloor = 10;
     
         // Current floor number
         int curFloorNum = 0;
