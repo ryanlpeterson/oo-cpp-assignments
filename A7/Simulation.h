@@ -11,12 +11,14 @@
 class Simulation
 {
     public:
-        // Constructor with parameter for floor number
+        // constructor with parameters for simulation
         Simulation(int numFloors, int numElevators, int travelTimePerFloor, std::string simFileName);
 
-        void execute();
+        // execute simulation
+        void execute() const;
 
     private:
+        // instance variables the user sets for the simulation
         int numFloors;
         int numElevators;
         int travelTimePerFloor;

@@ -3,39 +3,37 @@
  * Assignment #7: Elevators
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 11/28/21
+ * Description: Represents a floor that has a queue of passengers that are waiting
+ *  for an elevator. Passengers may be added or removed from the FIFO queue.
  **/
 
 #include "Floor.h"
 
 using namespace std;
 
-// Empty constructor, set the start floor to 1
-Floor::Floor()
-{
-    
-}
-
-// Constructor with floor number parameter
+// constructor with parameter for floor number
 Floor::Floor(int floorNum) :
     floorNum(floorNum)
 {
     
 }
 
-// Return the current floor number
-int Floor::getFloorNum() {
+// floor number getter
+int Floor::getFloorNum() const {
     return floorNum;
 }
 
-// Set the current floor number
+// floor number setter
 void Floor::setFloorNum(int newFloorNum) {
     floorNum = newFloorNum;
 }
 
+// add passenger to queue
 void Floor::pushPassenger(const Passenger& passenger) {
     passengers.push_back(passenger);
 }
 
+// return passenger at front of queue and remove from queue
 Passenger Floor::popPassenger() {
     // save off copy of passenger that will be returned, as pop will call passenger's destructor
     Passenger nextPassenger = passengers.front();
@@ -45,22 +43,17 @@ Passenger Floor::popPassenger() {
     return nextPassenger;
 }
 
-bool Floor::hasWaitingPassengers() {
+// return whether there are passengers in the queue
+bool Floor::hasWaitingPassengers() const {
     return (passengers.size() > 0);
 }
 
-int Floor::getNumWaitingPassengers() {
-    return passengers.size();
+// return a const ref to the queue of passengers
+const std::deque<Passenger>& Floor::getPassengers() const {
+    return passengers;
 }
 
-int Floor::getTotalPassengerWaitTime() {
-    int totalWaitTime = 0;
-    for (int i = 0; i < passengers.size(); i++) {
-        totalWaitTime += passengers[i].getWaitTime();
-    }
-    return totalWaitTime;
-}
-
+// tick wait time forward one "second" for all passengers in queue
 void Floor::tickWaitTimeForPassengers() {
     for (int i = 0; i < passengers.size(); ++i) {
         passengers[i].tickWaitTime();

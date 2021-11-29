@@ -3,22 +3,26 @@
  * Assignment #7: Elevators
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 11/28/21
+ * Description: Executes an elevator simulation based on the given number of floors,
+ *  number of elevators, time it takes an elevator to travel a floor, and a file with
+ *  passenger information. Simulations update state transition information every second,
+ *  and outputs state and statistic info.
  **/
 
-#include <iostream>
+#include <algorithm>
 #include <fstream>
+#include <iostream>
+#include <sstream>
+#include <deque>
+#include <vector>
 #include "Floor.h"
 #include "Passenger.h"
 #include "Elevator.h"
 #include "Simulation.h"
-#include <chrono>
-#include <thread>
-#include <sstream>
-#include <vector>
-#include <array>
 
 using namespace std;
 
+// Constructor with parameters for simulation
 Simulation::Simulation(int numFloors, int numElevators, int travelTimePerFloor, string simFileName) :
     numFloors (numFloors),
     numElevators (numElevators),
@@ -28,18 +32,20 @@ Simulation::Simulation(int numFloors, int numElevators, int travelTimePerFloor, 
 
 }
 
-void Simulation::execute() {
-
+// executes the simulation
+// reads the simulation file to construct passenger information
+// outputs state and statistic information to cout each simulation second
+void Simulation::execute() const {
+    // list to store passengers constructed from the sim file
     vector<Passenger> notYetStartedPassengers;
 
+    // read the sim file and construct passengers
     string line;
     ifstream elevatorFile (simFileName);
-
-    bool firstLineRead = false;
-
     int numLines = 0;
 
     if (elevatorFile.is_open()) {
+        // loop while lines remain in the file
         while (getline (elevatorFile, line)) {
             numLines++;
 
@@ -54,6 +60,7 @@ void Simulation::execute() {
             int endFloor;
             int numIterations = 0;
 
+            // pull passenger info from the line
             while (stringStream.good()) {
                 string substr;
                 getline(stringStream, substr, ',');
@@ -76,40 +83,43 @@ void Simulation::execute() {
                 }
             }
 
+            // construct the passenger and add them to the notYetStartedPassengers list
             Passenger passenger(startTime, startFloor, endFloor);
             notYetStartedPassengers.push_back(passenger);
-            
         }
+        // close the file
         elevatorFile.close();
     }
     else {
         cout << "Unable to open file";
+        return;
     }
 
     // sort passengers based on start time for ease later when determining if it is a passenger's start time
     sort(notYetStartedPassengers.begin(), notYetStartedPassengers.end());
 
-    // init elevators
+    // init elevators for this sim execution
     vector<Elevator> elevators;
     for (int i = 0; i < numElevators; i++) {
         //elevators[i] = Elevator(numFloors, travelTimePerFloor);
         elevators.push_back(Elevator(numFloors, travelTimePerFloor));
     }
 
-    // init floors
-    vector<Floor> floors (numFloors);
+    // init floors for this sim execution
+    vector<Floor> floors;
     for (int floorNum = 0; floorNum < numFloors; floorNum++) {
-        floors[floorNum] = Floor(floorNum);
+        floors.push_back(Floor(floorNum));
     }
 
-    int curTime = 0;
-    int donePassengersCount = 0;
-    int totalNumPassengers = notYetStartedPassengers.size();
     // init vector to collect done passengers
     vector<Passenger> donePassengers;
+    int donePassengersCount = 0;
 
+    // run the simulation, where each loop is one "second" in the sim
+    int curTime = 0;
+    int totalNumPassengers = notYetStartedPassengers.size();
     while (donePassengersCount < totalNumPassengers) {
-        // 1.
+        // 1. Put any passengers that start this second onto their respective floor
         // check waiting passengers to grab any that have a start time that matches curTime
         //      only need to loop into waitingPassengers until passenger.startTime > curTime
         //          then you would know you won't find any more passengers that are ready to be sent to their floors (since list is sorted)
@@ -147,8 +157,9 @@ void Simulation::execute() {
         }
 
 
-        // 2.
+        // 2. Move passengers off and onto elevators
         // iterate over elevators, for any that are STOPPED:
+        
         // 2a.
         // check the elevators' current floor position and offload any passengers that's dest floor matches the elevators current floor
         //      i.e. elevator.offloadPassengers()
@@ -190,21 +201,19 @@ void Simulation::execute() {
         }
 
 
-        // 3.
-        // for each elevator, update its state
-        //      ticks passenger travel times and updates states when appropriate
+        // 3. For each elevator, update
+        // tick passenger travel times and update states when appropriate
         for (int i = 0; i < elevators.size(); ++i) {
             elevators[i].update();
         }
 
-        // 4.
+        // 4. For each floor, update
         // tick wait time for passengers in floor queues
         for (int i = 0; i < floors.size(); ++i) {
             floors[i].tickWaitTimeForPassengers();
         }
 
-        // 5.
-        // display states and stats
+        // 5. Display states and stats
         // pull wait time and travel time from all passengers that have waited or traveled
         //      pull from floor queues, elevator passenger list, and list of done passengers
         //          pulling to get total wait time, total travel time, and number of passengers into the sim so far
@@ -215,7 +224,7 @@ void Simulation::execute() {
         // output elevator info (<current_floor_num>:<num_passengers>)
         cout << "Elevator curFloors: [";
         for (int i = 0; i < elevators.size(); ++i) {
-            cout << elevators[i].getCurFloorNum() << ":" << elevators[i].getNumPassengers() << ", ";
+            cout << elevators[i].getCurFloorNum() << ":" << elevators[i].getPassengers().size() << ", ";
         }
         cout << "]" << endl;
 
@@ -223,7 +232,7 @@ void Simulation::execute() {
         cout << "Occupied floors: [";
         for (int i = 0; i < floors.size(); ++i) {
             if (floors[i].hasWaitingPassengers()) {
-                cout << floors[i].getFloorNum() << ":" << floors[i].getNumWaitingPassengers() << ", ";
+                cout << floors[i].getFloorNum() << ":" << floors[i].getPassengers().size() << ", ";
             }
         }
         cout << "]" << endl;
@@ -237,16 +246,25 @@ void Simulation::execute() {
         int numWaitedPassengers = 0;
         int totalTravelTime = 0;
         int numTraveledPassengers = 0;
+        // get times and counts from floors
         for (int i = 0; i < floors.size(); ++i) {
-            totalWaitTime += floors[i].getTotalPassengerWaitTime();
-            numWaitedPassengers += floors[i].getNumWaitingPassengers();
+            const deque<Passenger>& floorsPassengers = floors[i].getPassengers();
+            for (int j = 0; j < floorsPassengers.size(); j++) {
+                totalWaitTime += floorsPassengers[j].getWaitTime();
+            }
+            numWaitedPassengers += floorsPassengers.size();
         }
+        // get times and counts from elevators
         for (int i = 0; i < elevators.size(); ++i) {
-            totalWaitTime += elevators[i].getTotalPassengerWaitTime();
-            totalTravelTime += elevators[i].getTotalPassengerTravelTime();
-            numWaitedPassengers += elevators[i].getNumPassengers();
-            numTraveledPassengers += elevators[i].getNumPassengers();
+            const vector<Passenger>& elevatorsPassengers = elevators[i].getPassengers();
+            for (int j = 0; j < elevatorsPassengers.size(); j++) {
+                totalWaitTime += elevatorsPassengers[j].getWaitTime();
+                totalTravelTime += elevatorsPassengers[j].getTravelTime();
+            }
+            numWaitedPassengers += elevatorsPassengers.size();
+            numTraveledPassengers += elevatorsPassengers.size();
         }
+        // get times and counts from done passengers list
         for (int i = 0; i < donePassengersCount; i++) {
             totalWaitTime += donePassengers[i].getWaitTime();
             totalTravelTime += donePassengers[i].getTravelTime();
@@ -271,4 +289,6 @@ void Simulation::execute() {
 
         curTime++;
     }
+    // while loop exited, all passengers must be in done list, sim complete
+    cout << "Simulation complete." << endl;
 }

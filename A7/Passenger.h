@@ -8,77 +8,56 @@
 #ifndef PASSENGER_H
 #define PASSENGER_H
 
-#include <iostream>
-
-using namespace std;
-
 class Passenger
 {
     public:
-
-        // Enumeration of different passenger statuses
-        // enum Status
-        // {
-        //     // Status not set
-        //     NOT_SET,
-        //     // Waiting to go up
-        //     WAITING_UP,
-        //     // Waiting to go down
-        //     WAITING_DOWN,
-        //     // Boarded and riding the elevator
-        //     RIDING,
-        //     // Finished riding the elevator
-        //     FINISHED
-        // };
-
-        // Empty constructor
-        Passenger();
-
-        // Constructor that takes start and end floor
+        // constructor that takes start time, start floor, and end floor
         Passenger(int startTime, int startFloorNum, int endFloorNum);
 
+        // start time getter and setter
         int getStartTime() const;
-
         void setStartTime(int startTime);
 
-        // Return the start floor number
+        // start floor getter
         int getStartFloorNum() const;
 
-        // Return the end floor number
+        // end floor getter
         int getEndFloorNum() const;
 
-        // Set the passenger's status and update the times
-        //void setStatus(Status status, int time);
+        // get wait time
+        int getWaitTime() const;
+        // tick wait time forward one "second"
+        void tickWaitTime();
 
-        //Status getStatus();
+        // get travel time
+        int getTravelTime() const;
+        // tick travel time forward one "second"
+        void tickTravelTime();
 
+        // comparitor operations to support sorting based on start time
         friend bool operator< (const Passenger& passenger1, const Passenger& passenger2);
         friend bool operator> (const Passenger& passenger1, const Passenger& passenger2);
-
         friend bool operator<= (const Passenger& passenger1, const Passenger& passenger2);
         friend bool operator>= (const Passenger& passenger1, const Passenger& passenger2);
 
-        int getWaitTime();
-        void tickWaitTime();
-        int getTravelTime();
-        void tickTravelTime();
-
     private:
+        // time in sim that passenger should appear at start floor
         int startTime;
 
-        // Start floor number
+        // start/source floor number
         int startFloorNum;
 
-        // End floor number
+        // end/dest floor number
         int endFloorNum;
         
-        int elapsedWaitTime = 0;
-        int elapsedTravelTime = 0;
+        // time spent waiting on floor before moved to elevator
+        int elapsedWaitTime;
 
-        // Current status of the passenger
-        //Status status;
+        // time spent on elevator before reaching end floor
+        int elapsedTravelTime;
 };
 
+// comparitor operations to support sorting based on start time
 inline bool operator< (const Passenger& passenger1, const Passenger& passenger2)
 {
     return passenger1.getStartTime() < passenger2.getStartTime();

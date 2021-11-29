@@ -14,37 +14,33 @@
 class Floor
 {
     public:
-
-        // Empty constructor
-        Floor();
-
-        // Constructor with parameter for floor number
+        // constructor with parameter for floor number
         Floor(int floorNum);
 
-        // Return the current floor number
-        int getFloorNum();
-
-        // Set the current floor number
+        // floor number getter and setter
+        int getFloorNum() const;
         void setFloorNum(int floorNum);
 
+        // add passenger to queue
         void pushPassenger(const Passenger& passenger);
 
+        // return passenger at front of queue and remove from queue
         Passenger popPassenger();
 
-        bool hasWaitingPassengers();
+        // return whether there are passengers in the queue
+        bool hasWaitingPassengers() const;
 
-        int getNumWaitingPassengers();
+        // return a const ref to the queue of passengers
+        const std::deque<Passenger>& getPassengers() const;
 
-        int getTotalPassengerWaitTime();
-
+        // tick wait time forward one "second" for all passengers in queue
         void tickWaitTimeForPassengers();
 
     private:
-    
-        // current floor number
+        // floor's number
         int floorNum;
 
-        // Queue of passengers waiting for the elevator
+        // queue of passengers waiting for the elevator
         std::deque<Passenger> passengers;
 };
 #endif

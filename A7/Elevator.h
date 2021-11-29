@@ -9,93 +9,88 @@
 #define ELEVATOR_H
 
 #include "Passenger.h"
-#include <queue>
-#include <iterator>
 #include <set>
-
-using namespace std;
+#include <vector>
 
 class Elevator
 {
     public:
 
-        // Enumeration of different elevator states
-        enum State
+        // enumerator of different elevator states
+        enum ElevatorState
         {
-            // Elevator stopped at floor
+            // elevator is stopped at floor
             STOPPED,
-            // Elavator in the process of stopping
+            // elavator is in the process of stopping
             STOPPING,
-            // Elevator moving up
+            // elevator is moving up
             MOVING_UP,
-            // Elevator moving down
+            // elevator is moving down
             MOVING_DOWN
         };
 
-        // Empty constructor
+        // constructor that takes the number of floors and the time it takes to travel one floor
         Elevator(int numFloors, int travelTimePerFloor);
 
-        bool isStopped();
+        // returns whether the elevator is currently in the STOPPED state
+        bool isStopped() const;
 
-        State getState();
+        // returns whether the number of passengers onboard is equal to the MAX_CAPACITY
+        bool isAtCapacity() const;
 
-        bool isAtCapacity();
+        // current floor number getter
+        int getCurFloorNum() const;
 
-        int getCurFloorNum();
+        // return a const ref to the list of passengers
+        const std::vector<Passenger>& getPassengers() const;
 
-        int getNumPassengers();
-
-        int getTotalPassengerWaitTime();
-
-        int getTotalPassengerTravelTime();
-
-        // Add passenger to the elevator
+        // add passenger to the elevator
         void addPassenger(Passenger passenger);
 
+        // remove passengers whose end floor matches the current floor
         std::vector<Passenger> offloadPassengers();
 
+        // indicates to the elevator whether a passenger wants an elevator at a given floor
         void setSummonedAtFloor(int floorNum, bool summon);
 
-        // Update the state and passengers
+        // update the state of the elevator for one sim "second"
         void update();
 
-        void printPassengerInfo();
-
-        void printDestFloorInfo();
-
     private:
+        // returns whether there is still a valid target floor in the direction currently being moved
+        bool hasFloorToContinueMovingTowards() const;
 
-        bool hasFloorToContinueMovingTowards();
-
-        // time it takes to move between floors, default to 10sec
-        int travelTimePerFloor = 10;
+        // time it takes to move between floors
+        int travelTimePerFloor;
     
-        // Current floor number
+        // current floor number
         int curFloorNum = 0;
 
+        // boolean list for floors, true indicates a passenger is waiting for pickup at the floor corresponding to the index
         std::vector<bool> floorsWithWaitingPassengers;
 
-        // Set of destination floors above current floor
-        std::set<int, greater<int> > destFloorsUp;
+        // set of destination floors above current floor
+        std::set<int, std::greater<int> > destFloorsUp;
 
-        // Set of destination floors below current floor
-        std::set<int, less<int> > destFloorsDown;
+        // set of destination floors below current floor
+        std::set<int, std::less<int> > destFloorsDown;
 
-        // Current time in the simulation
+        // current time elapsed since last goal time reached
         int curTime = 0;
 
-        // Goal time of next floor
+        // goal time until state may change
         int goalTime = 0;
 
-        // Current elevator state
-        State state = STOPPED;
+        // current elevator state
+        ElevatorState state = STOPPED;
 
-        // Previous direction to break ties in deciding which direction to move
+        // previous direction to break ties in deciding which direction to move
         bool prevDirectionWasUp = true;
 
-        // Current passengers riding in the elevator
+        // current passengers riding in the elevator
         std::vector<Passenger> passengers;
 
+        // max number of passengers that may be on the elevator at a given time
         static const int MAX_CAPACITY = 8;
 };
 #endif

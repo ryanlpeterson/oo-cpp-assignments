@@ -3,18 +3,23 @@
  * Assignment #7: Elevators
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 11/28/21
+ * Description: Represents an elevator containing a list of passengers. Transitions
+ *  between states of STOPPED, MOVING_UP, MOVING_DOWN, and STOPPING. Passengers
+ *  may be added or removed from the elevator. The elevator can only hold a MAX_CAPACITY
+ *  number of passengers. Passengers on floors may request an elevator. Elevators will
+ *  stop for any floor that is a destination floor of a passenger or where passengers are
+ *  waiting on the floor for an elevator.
  **/
 
 #include "Elevator.h"
 
 using namespace std;
 
-// Empty constructor, set the start floor to 1
+// constructor that takes the number of floors and the time it takes to travel one floor
 Elevator::Elevator(int numFloors, int travelTimePerFloor) :
     floorsWithWaitingPassengers (numFloors),
     travelTimePerFloor (travelTimePerFloor)
 {
-    // might have to do floorsWithWaitingPassengers.reserve(numFloors) instead
     floorsWithWaitingPassengers.resize(numFloors);
     fill(floorsWithWaitingPassengers.begin(), floorsWithWaitingPassengers.end(), false);
 
@@ -25,50 +30,35 @@ Elevator::Elevator(int numFloors, int travelTimePerFloor) :
     // current floor is 0
 }
 
-bool Elevator::isStopped() {
+// returns whether the elevator is currently in the STOPPED state
+bool Elevator::isStopped() const {
     return (state == STOPPED);
 }
 
-Elevator::State Elevator::getState() {
-    return state;
-}
-
-bool Elevator::isAtCapacity() {
+// returns whether the number of passengers onboard is equal to the MAX_CAPACITY
+bool Elevator::isAtCapacity() const {
     return (passengers.size() >= MAX_CAPACITY);
 }
 
-int Elevator::getCurFloorNum() {
+// current floor number getter
+int Elevator::getCurFloorNum() const {
     return curFloorNum;
 }
 
-int Elevator::getNumPassengers() {
-    return passengers.size();
+// return a const ref to the list of passengers
+const std::vector<Passenger>& Elevator::getPassengers() const {
+    return passengers;
 }
 
-int Elevator::getTotalPassengerWaitTime() {
-    int totalWaitTime = 0;
-    for (int i = 0; i < passengers.size(); i++) {
-        totalWaitTime += passengers[i].getWaitTime();
-    }
-    return totalWaitTime;
-}
-
-int Elevator::getTotalPassengerTravelTime() {
-    int totalTravelTime = 0;
-    for (int i = 0; i < passengers.size(); i++) {
-        totalTravelTime += passengers[i].getTravelTime();
-    }
-    return totalTravelTime;
-}
-
-// Constructor with floor number parameter
+// add passenger to the elevator
 void Elevator::addPassenger(Passenger passenger)
 {
     if (!isAtCapacity())
     {
-        // Add passenger to vector of passengers
+        // add passenger to vector of passengers
         passengers.push_back(passenger);
 
+        // update sets for dest floors of passengers onboard
         if (passenger.getEndFloorNum() > curFloorNum)
         {
             destFloorsUp.insert(passenger.getEndFloorNum());
@@ -80,6 +70,7 @@ void Elevator::addPassenger(Passenger passenger)
     }
 }
 
+// remove passengers whose end floor matches the current floor
 vector<Passenger> Elevator::offloadPassengers() {
     // need to return and remove passengers that have a dest floor of the current floor
     vector<Passenger> offloadedPassengers;
@@ -87,7 +78,7 @@ vector<Passenger> Elevator::offloadPassengers() {
     // can only offload if stopped
     if (isStopped()) {
         vector<Passenger>::iterator it = passengers.begin();
-        // Iterate til the end of set
+        // iterate til the end of set
         while (it != passengers.end()) {
             if (it->getEndFloorNum() == curFloorNum) {
                 // add passenger to offload list
@@ -100,104 +91,41 @@ vector<Passenger> Elevator::offloadPassengers() {
             }
         }
 
-        // need to remove current floor destFloors
+        // need to remove current floor from destFloors
         destFloorsDown.erase(curFloorNum);
         destFloorsUp.erase(curFloorNum);
     }
 
+    // return passengers offloaded
     return offloadedPassengers;
 }
 
+// indicates to the elevator whether a passenger wants an elevator at a given floor
 void Elevator::setSummonedAtFloor(int floorNum, bool summon) {
     floorsWithWaitingPassengers[floorNum] = summon;
 }
 
-void Elevator::printPassengerInfo() {
-    cout << "[";
-    for (int i = 0; i < passengers.size(); i++) {
-        cout << passengers[i].getStartTime() << ":" << passengers[i].getStartFloorNum()  << ":" << passengers[i].getEndFloorNum() << ", ";
-    }
-    cout << "]";
-}
-
-void Elevator::printDestFloorInfo() {
-    cout << "up:[";
-    set<int>::iterator it = destFloorsUp.begin();
-    // Iterate til the end of set
-    while (it != destFloorsUp.end()) {
-        cout << (*it) << ", ";
-        it++;
-    }
-    cout << "] ";
-
-    cout << "down:[";
-    it = destFloorsDown.begin();
-    // Iterate til the end of set
-    while (it != destFloorsDown.end()) {
-        cout << (*it) << ", ";
-        it++;
-    }
-    cout << "]";
-}
-
-bool Elevator::hasFloorToContinueMovingTowards() {
-    if (state == MOVING_UP) {
-        // check if there are any dest floors set (i.e. there is a passenger)
-        if (destFloorsUp.size() > 0) {
-            return true;
-        }
-
-        // if no dest floors are set, check if any floors are summoning an elevator
-        bool isAtLeastOneFloorWithWaitingPassenger = false;
-        for (int i = curFloorNum + 1; i < floorsWithWaitingPassengers.size(); i++) {
-            if (floorsWithWaitingPassengers[i]) {
-                isAtLeastOneFloorWithWaitingPassenger = true;
-                break;
-            }
-        }
-        return isAtLeastOneFloorWithWaitingPassenger;
-    }
-    else if (state == MOVING_DOWN) {
-        // check if there are any dest floors set (i.e. there is a passenger)
-        if (destFloorsDown.size() > 0) {
-            return true;
-        }
-
-        // if no dest floors are set, check if any floors are summoning an elevator
-        bool isAtLeastOneFloorWithWaitingPassenger = false;
-        for (int i = curFloorNum - 1; i >= 0; i--) {
-            if (floorsWithWaitingPassengers[i]) {
-                isAtLeastOneFloorWithWaitingPassenger = true;
-                break;
-            }
-        }
-        return isAtLeastOneFloorWithWaitingPassenger;
-    }
-    return false;
-}
-
+// update the state of the elevator for one sim "second"
 void Elevator::update()
 {
-    // tick passengers' travel time for certain states
-    // 
+    // tick passengers' travel time if moving or stopping
+    
     // if current time == goal time
     //      move to next state
     //      set new goal time for new state
     //      set current time to 0
     // else
-    //      tick current time
+    //      tick time progress towards goal time
 
-    // state transitions
+    // Summary of state transitions:
     // STOPPED
     //      goal time: 0
-    //      actions: n/a
     //      next state: MOVING_UP, MOVING_DOWN, or stay STOPPED
     //          will need to decide here whether going up or down, need to consider previous state as a tie-break
     //              if both destFloors are empty, look at closest floorsWithWaitingPassengers
     //                  if no floorsWithWaitingPassengers are true, just stay STOPPED
     // MOVING_UP / MOVING_DOWN
     //      goal time: <travelTimePerFloor>sec
-    //      actions: tick travel time of all passengers onboard
     //      next state: STOPPING, or continue MOVING_UP/MOVING_DOWN
     //          update current floor, as we've reached a new floor
     //          STOPPING if new floor is one of the dest floors, or someone is waiting in the new floor's queue
@@ -205,10 +133,9 @@ void Elevator::update()
     //          MOVING_UP/MOVING_DOWN, otherwise
     // STOPPING
     //      goal time: 2sec
-    //      actions: tick travel time of all passengers onboard
     //      next state: STOPPED
 
-    // do action no matter if goal time reached
+    // ticket travel time for each passenger on board, unless might be offloaded
     if (state == MOVING_UP || state == MOVING_DOWN || state == STOPPING) {
         for (int i = 0; i < passengers.size(); i++) {
             passengers[i].tickTravelTime();
@@ -219,7 +146,6 @@ void Elevator::update()
     if (curTime == goalTime) {
         // STOPPED
         if (state == STOPPED) {
-            //cout << "state stopped" << endl;
             // start moving or stay stopped?
             if (destFloorsUp.size() > 0 && destFloorsDown.size() > 0) {
                 // some passengers want to go up, some want to go down, tie-break by continuing previous direction
@@ -264,6 +190,7 @@ void Elevator::update()
                     int upFloorDist = closestUpFloorNum - curFloorNum;
                     int downFloorDist = curFloorNum - closestDownFloorNum;
 
+                    // move towards closest floor summoning an elevator
                     if (upFloorDist < downFloorDist) {
                         state = MOVING_UP;
                     }
@@ -280,11 +207,11 @@ void Elevator::update()
                         }
                     }
                 }
-                // only an floor above summoned
+                // only a floor above summoned
                 else if (closestUpFloorNum != -1) {
                     state = MOVING_UP;
                 }
-                // only an floor below summoned
+                // only a floor below summoned
                 else if (closestDownFloorNum != -1) {
                     state = MOVING_DOWN;
                 }
@@ -293,11 +220,11 @@ void Elevator::update()
         }
         // MOVING_UP
         else if (state == MOVING_UP) {
-            //cout << "state moving up" << endl;
+            // update current floor number
             curFloorNum++;
 
             // determine if the floor newly arrived to is a target floor, if so stop
-            // also stop if there is no longer a floor to move towards (likely another elevator arrived to summoning floor first)
+            // also stop if there is no longer a floor to move towards (likely another elevator arrived to a summoning floor first)
             if (destFloorsUp.find(curFloorNum) != destFloorsUp.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToContinueMovingTowards()) {
                 state = STOPPING;
             }
@@ -305,11 +232,11 @@ void Elevator::update()
         }
         // MOVING_DOWN
         else if (state == MOVING_DOWN) {
-            //cout << "state moving down" << endl;
+            // update current floor number
             curFloorNum--;
 
             // determine if the floor newly arrived to is a target floor, if so stop
-            // also stop if there is no longer a floor to move towards (likely another elevator arrived to summoning floor first)
+            // also stop if there is no longer a floor to move towards (likely another elevator arrived to a summoning floor first)
             if (destFloorsDown.find(curFloorNum) != destFloorsDown.end() || floorsWithWaitingPassengers[curFloorNum] || !hasFloorToContinueMovingTowards()) {
                 state = STOPPING;
             }
@@ -317,7 +244,7 @@ void Elevator::update()
         }
         // STOPPING
         else if (state == STOPPING) {
-            //cout << "state stopping" << endl;
+            // simply stop
             state = STOPPED;
         }
 
@@ -325,27 +252,61 @@ void Elevator::update()
         curTime = 0;
         // update goal time based on new state
         if (state == STOPPED) {
-            //cout << "update goal time stopped" << endl;
             goalTime = 0;
         }
         else if (state == MOVING_UP) {
-            //cout << "update goal time moving up" << endl;
             goalTime = travelTimePerFloor;
-            // also remember what will later be previous direction
+            // also remember what will later be previous direction for potential tie-breaks
             prevDirectionWasUp = true;
         }
         else if (state == MOVING_DOWN) {
-            //cout << "update goal time moving down" << endl;
             goalTime = travelTimePerFloor;
-            // also remember what will later be previous direction
+            // also remember what will later be previous direction for potential tie-breaks
             prevDirectionWasUp = false;
         }
         else if (state == STOPPING) {
-            //cout << "update goal time stopping" << endl;
             goalTime = 2;
         }
     }
     else {
+        // tick time towards goal time
         curTime++;
     }
+}
+
+// returns whether there is still a valid target floor in the direction currently being moved
+bool Elevator::hasFloorToContinueMovingTowards() const {
+    if (state == MOVING_UP) {
+        // check if there are any dest floors set above (i.e. there is a passenger)
+        if (destFloorsUp.size() > 0) {
+            return true;
+        }
+
+        // if no dest floors are set, check if any floors above are summoning an elevator
+        bool isAtLeastOneFloorWithWaitingPassenger = false;
+        for (int i = curFloorNum + 1; i < floorsWithWaitingPassengers.size(); i++) {
+            if (floorsWithWaitingPassengers[i]) {
+                isAtLeastOneFloorWithWaitingPassenger = true;
+                break;
+            }
+        }
+        return isAtLeastOneFloorWithWaitingPassenger;
+    }
+    else if (state == MOVING_DOWN) {
+        // check if there are any dest floors set below (i.e. there is a passenger)
+        if (destFloorsDown.size() > 0) {
+            return true;
+        }
+
+        // if no dest floors are set, check if any floors below are summoning an elevator
+        bool isAtLeastOneFloorWithWaitingPassenger = false;
+        for (int i = curFloorNum - 1; i >= 0; i--) {
+            if (floorsWithWaitingPassengers[i]) {
+                isAtLeastOneFloorWithWaitingPassenger = true;
+                break;
+            }
+        }
+        return isAtLeastOneFloorWithWaitingPassenger;
+    }
+    return false;
 }

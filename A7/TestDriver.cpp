@@ -3,6 +3,7 @@
  * Assignment #7: Elevators
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 11/28/21
+ * Description: Provides an automated test interface for Simulation.
  **/
 
 #include <string>
