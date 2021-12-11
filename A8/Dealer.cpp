@@ -12,32 +12,12 @@
 
 using namespace std;
 
-/**
- * Default constructor
- **/
-Dealer::Dealer() 
-{
-
-}
-
-void Dealer::createDeck() 
-{
-    const std::array<char, 13> cardRanks = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
-    const std::array<char, 4> cardSuits = {'C', 'S', 'H', 'D'};
-
-    for (int i = 0; i < sizeof(cardSuits); ++i) {
-        for (int j = 0; j < sizeof(cardRanks); ++j) {
-            deck.push_back(Card(cardRanks[j], cardSuits[i]));
-        }
-    }
-}
-
-void Dealer::shuffle() 
+void Dealer::shuffle(deque<Card>& deck)
 {
     // Use a different seed value so that
     // we don't get same result each time
     // we run this program
-    srand (time(NULL));
+    srand(time(NULL));
 
     int n = deck.size();
  
@@ -48,6 +28,11 @@ void Dealer::shuffle()
     }
 }
 
-void Dealer::deal() {
-
+void Dealer::deal(deque<Card>& deck, vector<Player>& players) {
+    for (int i = 0; i < MAX_HAND_SIZE; i++) {
+        for (int j = 0; j < players.size(); j++) {
+            players[j].addCardToHand(deck.front());
+            deck.pop_front();
+        }
+    }
 }

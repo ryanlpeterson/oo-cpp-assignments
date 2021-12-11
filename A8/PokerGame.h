@@ -10,15 +10,17 @@
 #include "Card.h"
 #include "Player.h"
 
-class Dealer
+class PokerGame
 {
     public:
-        // shuffle the deck of cards
-        void shuffle(std::deque<Card>& deck);
+        PokerGame(std::vector<Player> players);
 
-        // deal cards to players
-        void deal(std::deque<Card>& deck, std::vector<Player>& players);
+        void play();
 
     private:
-        static const int MAX_HAND_SIZE = 5;
+        void initDeckTemplate();
+
+        int potChipCount = 0;
+        std::vector<Player> players;
+        std::deque<Card> deckTemplate;
 };

@@ -11,13 +11,33 @@
 using namespace std;
 
 /**
+ * Constructor to initialize an empty hand
+ **/
+Hand::Hand() :
+    cardsInHand (0), handType (Hand::INCOMPLETE)
+{
+}
+
+/**
  * Constructor to initialize the hand with the given cards
  **/
 Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
-    cards {card0, card1, card2, card3, card4}
+    cards {card0, card1, card2, card3, card4}, cardsInHand (5)
 {
     sortHand();
     checkHandType();
+}
+
+void Hand::addCardToHand(Card card)
+{
+    cards[cardsInHand] = card;
+    cardsInHand++;
+
+    if (cardsInHand == 5)
+    {
+        sortHand();
+        checkHandType();
+    }
 }
 
 /**

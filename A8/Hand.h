@@ -11,8 +11,13 @@
 class Hand
 {
     public:
+        // Constructor to initialize an empty hand
+        Hand();
+
         // Constructor to initialize the hand with the given cards
         Hand(Card card0, Card card1, Card card2, Card card3, Card card4);
+
+        void addCardToHand(Card card);
 
         // Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order
         // Returns less than 0 if hand1 ranks higher, returns greater than 0 if hand2 ranks higher, and returns 0 if hands rank the same
@@ -55,7 +60,8 @@ class Hand
             THREE_OF_A_KIND,
             TWO_PAIR,
             ONE_PAIR,
-            HIGH_CARD
+            HIGH_CARD,
+            INCOMPLETE
         };
 
         // private instance variables
@@ -67,4 +73,7 @@ class Hand
 
         // Type of hand (flush, fullhouse, etc.)
         HandType handType;
+
+        // Number of cards currently set in the cards array
+        int cardsInHand;
 };
