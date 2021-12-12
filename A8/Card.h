@@ -3,6 +3,7 @@
  * Assignment #8: Poker Game
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 12/12/2021
+ * Description: Card class that contains a card rank and suit
  **/
 
 #ifndef CARD_H

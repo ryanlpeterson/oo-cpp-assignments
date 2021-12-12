@@ -3,6 +3,8 @@
  * Assignment #8: Poker Game
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 12/12/2021
+ * Description: Static dealer class that helps shuffle decks, deal cards to players,
+ *  and clear players' hands.
  **/
 
 #ifndef DEALER_H
@@ -27,6 +29,6 @@ static class Dealer
         static void collectCardsFromPlayers(std::vector<std::shared_ptr<Player> > players);
 
     private:
-        static const int MAX_HAND_SIZE = 5;
+        // none
 };
 #endif

@@ -29,17 +29,20 @@ Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
 }
 
 /**
- * Adds a single card to the hand
+ * Adds a single card to the hand. Does nothing if the hand is already full.
+ * Once the hand is full, the hand is sorted and the hand type is checked.
  **/
 void Hand::addCardToHand(Card card)
 {
-    cards[numCardsInHand] = card;
-    numCardsInHand++;
+    if (numCardsInHand < 5) {
+        cards[numCardsInHand] = card;
+        numCardsInHand++;
 
-    if (numCardsInHand == 5)
-    {
-        sortHand();
-        checkHandType();
+        if (numCardsInHand == 5)
+        {
+            sortHand();
+            checkHandType();
+        }
     }
 }
 

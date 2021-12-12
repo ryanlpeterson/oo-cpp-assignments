@@ -3,6 +3,7 @@
  * Assignment #8: Poker Game
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 12/12/2021
+ * Description: Hand class that keeps track of cards in a player's hand and compares hands
  **/
 
 #ifndef HAND_H
@@ -19,11 +20,12 @@ class Hand
 
         // Constructor to initialize the hand with the given cards
         Hand(Card card0, Card card1, Card card2, Card card3, Card card4);
-
+        
+        // Add a single card to the hand, does nothing if the hand is already full
         void addCardToHand(Card card);
-
+        // Clears the cards in hand
         void discardHand();
-
+        // Returns the number of cards added to the hand
         int getNumCardsInHand() const;
 
         // Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order

@@ -3,7 +3,8 @@
  * Assignment #8: Poker Game
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 12/12/2021
- * Description:
+ * Description: Player derived class that prompts the user for decisions on
+ *  actions and bets.
  **/
 
 #include <iostream>
@@ -11,11 +12,13 @@
 
 using namespace std;
 
+// ctor
 InteractivePlayer::InteractivePlayer(string name, int startingChipCount) :
-    Player(false, name, startingChipCount)
+    Player(name, startingChipCount)
 {
 }
 
+// prompts user for how much to bet
 int InteractivePlayer::bet() {
     cout << "Enter integer value willing to bet: ";
     int bet;
@@ -25,8 +28,8 @@ int InteractivePlayer::bet() {
     return getAmountBet();
 }
 
-// basically willing to bet maxWillingToBet if hand is better than thresholdHand, otherwise folds
-Player::TurnAction InteractivePlayer::takeAction(int curMaxBet) {
+// prompts user for which action to take
+Player::TurnAction InteractivePlayer::selectAction(int curMaxBet) {
     char action;
     do {
         cout << "Enter action to take (c|r|f) for CALL, RAISE, or FOLD respectfully: ";

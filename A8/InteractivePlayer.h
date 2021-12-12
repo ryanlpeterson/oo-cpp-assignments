@@ -3,6 +3,8 @@
  * Assignment #8: Poker Game
  * Authors: Alayna Peterson and Ryan Peterson
  * Due: 12/12/2021
+ * Description: Player derived class that prompts the user for decisions on
+ *  actions and bets.
  **/
 
 #ifndef INTERACTIVE_PLAYER_H
@@ -15,12 +17,16 @@
 class InteractivePlayer: public Player
 {
     public:
+        // ctor
         InteractivePlayer(std::string name, int startingChipCount);
 
+        // prompts user for how much to bet
         int bet();
 
-        TurnAction takeAction(int curMaxBet);
+        // prompts user for which action to take
+        TurnAction selectAction(int curMaxBet);
 
     private:
+        // none
 };
 #endif
