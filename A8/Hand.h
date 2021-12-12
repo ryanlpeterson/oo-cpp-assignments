@@ -24,6 +24,8 @@ class Hand
 
         void discardHand();
 
+        int getNumCardsInHand() const;
+
         // Compares hands first based on hand type, if of the same type compares based on the ranks of cards in priority order
         // Returns less than 0 if hand1 ranks higher, returns greater than 0 if hand2 ranks higher, and returns 0 if hands rank the same
         static int compareHands(Hand hand1, Hand hand2);
@@ -80,6 +82,6 @@ class Hand
         HandType handType;
 
         // Number of cards currently set in the cards array
-        int cardsInHand;
+        int numCardsInHand;
 };
 #endif

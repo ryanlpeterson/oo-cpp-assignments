@@ -17,13 +17,13 @@ using namespace std;
 
 int main()
 {
-    vector<Player*> players;
+    vector<std::shared_ptr<Player>> players;
     int startingChipCount = 100;
     
     // TODO: create players from user input
-    players.push_back(new InteractivePlayer("John", startingChipCount));
-    players.push_back(new InteractivePlayer("Halsey", startingChipCount));
-    players.push_back(new BotPlayer("Cortana", startingChipCount));
+    players.push_back(make_shared<InteractivePlayer>("John", startingChipCount));
+    players.push_back(make_shared<InteractivePlayer>("Halsey", startingChipCount));
+    players.push_back(make_shared<BotPlayer>("Cortana", startingChipCount));
 
     PokerGame pokerGame(players);
 

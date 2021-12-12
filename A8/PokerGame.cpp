@@ -12,7 +12,7 @@
 
 using namespace std;
 
-PokerGame::PokerGame(vector<Player*> players) :
+PokerGame::PokerGame(vector<std::shared_ptr<Player> > players) :
     players (players)
 {
     initDeckTemplate();
@@ -28,15 +28,20 @@ void PokerGame::play() {
 
     cout << "Starting betting..." << endl;
     cout << endl;
-    int curMaxBet = 0;
+    int numPlayersOut = 0;
+    for (int i = 0; i < players.size(); i++) {
+        if (!players[i]->hasHand()) {
+            numPlayersOut++;
+        }
+    }
     int numPlayersSinceNewBet = 0;
-    int numPlayersFolded = 0;
     int curPlayerIndex = 0;
-    while (numPlayersSinceNewBet < players.size() && numPlayersFolded < players.size() - 1) {
+    int curMaxBet = 0;
+    while (numPlayersSinceNewBet < players.size() && numPlayersOut < players.size() - 1) {
 
         Player& curPlayer = *players[curPlayerIndex];
 
-        if (!curPlayer.getIsFolded() && curPlayer.getChipCount() > 0) {
+        if (!curPlayer.getIsFolded() && curPlayer.hasHand()) {
             // first print the latest game state info
             printGameState(curPlayerIndex);
             cout << endl;
@@ -60,7 +65,7 @@ void PokerGame::play() {
             }
             else if (action == Player::TurnAction::FOLD) {
                 cout << curPlayer.getName() << " folded." << endl;
-                numPlayersFolded++;
+                numPlayersOut++;
             }
 
             cout << endl;
@@ -81,7 +86,7 @@ void PokerGame::play() {
 
     // get pot value and get players that didn't fold
     int pot = 0;
-    vector<Player*> remainingPlayers;
+    vector<std::shared_ptr<Player> > remainingPlayers;
     for (int i = 0; i < players.size(); i++) {
         int amountBet = players[i]->getAmountBet();
         // add chips to pot and take from player
@@ -94,7 +99,7 @@ void PokerGame::play() {
 
     // find winning player(s)
     // keep a running list of potential tie-ers
-    vector<Player*> potentiallyTieingPlayers;
+    vector<std::shared_ptr<Player> > potentiallyTieingPlayers;
     while (remainingPlayers.size() > 1) {
         int compareResult = Hand::compareHands(remainingPlayers[0]->getHand(), remainingPlayers[1]->getHand());
         if (compareResult < 0) {
@@ -174,12 +179,21 @@ void PokerGame::printGameState(int curPlayerIndex) {
         else {
             cout << "   " << player.getName();
         }
-        if (player.getIsFolded()) {
-            cout << " (FOLDED)";
+
+        if (player.hasHand()) {
+            if (player.getIsFolded()) {
+                cout << " (FOLDED)";
+            }
+            if (player.getChipCount() <= 0) {
+                cout << " (BANKRUPT)";
+            }
+            cout << endl;
+            cout << "Bet:  " << player.getAmountBet() << "/" << player.getChipCount() << endl;
+            cout << "Hand: " << player.getHand().toString() << endl;
         }
-        cout << endl;
-        cout << "Bet:  " << player.getAmountBet() << "/" << player.getChipCount() << endl;
-        cout << "Hand: " << player.getHand().toString() << endl;
+        else {
+            cout << " (BANKRUPT)" << endl;
+        }
     }
 }
 

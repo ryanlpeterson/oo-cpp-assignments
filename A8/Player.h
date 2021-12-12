@@ -32,6 +32,8 @@ class Player
 
         void discardHand();
 
+        bool hasHand() const;
+
         void awardChips(int chipAmount);
         void takeChips(int chipAmount);
 

@@ -32,6 +32,10 @@ void Player::discardHand() {
     hand.discardHand();
 }
 
+bool Player::hasHand() const {
+    return (hand.getNumCardsInHand() == 5);
+}
+
 void Player::awardChips(int chipAmount) {
     chipCount += chipAmount;
 }

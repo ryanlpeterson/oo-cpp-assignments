@@ -14,7 +14,7 @@ using namespace std;
  * Constructor to initialize an empty hand
  **/
 Hand::Hand() :
-    cardsInHand (0), handType (Hand::INCOMPLETE)
+    numCardsInHand (0), handType (Hand::INCOMPLETE)
 {
 }
 
@@ -22,7 +22,7 @@ Hand::Hand() :
  * Constructor to initialize the hand with the given cards
  **/
 Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
-    cards {card0, card1, card2, card3, card4}, cardsInHand (5)
+    cards {card0, card1, card2, card3, card4}, numCardsInHand (5)
 {
     sortHand();
     checkHandType();
@@ -33,10 +33,10 @@ Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
  **/
 void Hand::addCardToHand(Card card)
 {
-    cards[cardsInHand] = card;
-    cardsInHand++;
+    cards[numCardsInHand] = card;
+    numCardsInHand++;
 
-    if (cardsInHand == 5)
+    if (numCardsInHand == 5)
     {
         sortHand();
         checkHandType();
@@ -47,8 +47,15 @@ void Hand::addCardToHand(Card card)
  * Clears the cards in hand
  **/
 void Hand::discardHand() {
-    cardsInHand = 0;
+    numCardsInHand = 0;
     cards.fill(Card());
+}
+
+/**
+ * Returns number of cards in hand
+ **/
+int Hand::getNumCardsInHand() const {
+    return numCardsInHand;
 }
 
 /**

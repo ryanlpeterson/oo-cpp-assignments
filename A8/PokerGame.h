@@ -9,6 +9,7 @@
 #define POKER_GAME_H
 
 #include <deque>
+#include <memory>
 #include <vector>
 #include "Card.h"
 #include "Player.h"
@@ -17,7 +18,7 @@ class PokerGame
 {
     public:
 
-        PokerGame(std::vector<Player*> players);
+        PokerGame(std::vector<std::shared_ptr<Player> > players);
 
         void play();
 
@@ -28,7 +29,7 @@ class PokerGame
     private:
         void initDeckTemplate();
 
-        std::vector<Player*> players;
+        std::vector<std::shared_ptr<Player> > players;
         std::deque<Card> deckTemplate;
 };
 #endif
