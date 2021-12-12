@@ -58,7 +58,7 @@ Card& Card::operator=(const Card& other)
 /**
  * Returns the card rank
  **/
-char Card::getRank()
+char Card::getRank() const
 {
     return cardRank;
 }
@@ -66,7 +66,7 @@ char Card::getRank()
 /**
  * Returns the card suit
  **/
-char Card::getSuit()
+char Card::getSuit() const
 {
     return cardSuit;
 }
@@ -74,7 +74,7 @@ char Card::getSuit()
 /**
  * Returns the value of the card (2-14)
  **/
-int Card::getValue()
+int Card::getValue() const
 {
     int cardRanksLength = sizeof(cardRanks) / sizeof(cardRanks[0]);
     for (int i = 0; i < cardRanksLength; ++i)
@@ -100,7 +100,7 @@ string Card::toString() const
 /**
  * Returns if card rank and suit are valid
  **/
-bool Card::isValid(char rank, char suit)
+bool Card::isValid(char rank, char suit) const
 {
     bool rankValid = false;
     bool suitValid = false;

@@ -29,13 +29,13 @@ class Card
         Card& operator=(const Card& other);
 
         // returns the card rank
-        char getRank();
+        char getRank() const;
 
         // returns the card suit
-        char getSuit();
+        char getSuit() const;
 
         // returns the value of the card
-        int getValue();
+        int getValue() const;
 
         // returns the card rank and suit as a concatenated string
         std::string toString() const;
@@ -43,7 +43,7 @@ class Card
     private:
 
         // returns if card rank and suit is valid
-        bool isValid(char rank, char suit);
+        bool isValid(char rank, char suit) const;
 
         // array of possible card ranks
         const std::array<char, 13> cardRanks = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
