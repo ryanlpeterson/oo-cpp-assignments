@@ -5,6 +5,9 @@
  * Due: 12/12/2021
  **/
 
+#ifndef POKER_GAME_H
+#define POKER_GAME_H
+
 #include <deque>
 #include <vector>
 #include "Card.h"
@@ -13,14 +16,19 @@
 class PokerGame
 {
     public:
-        PokerGame(std::vector<Player> players);
+
+        PokerGame(std::vector<Player*> players);
 
         void play();
+
+        bool isMultiplePlayersWithChips();
+
+        void printGameState(int curPlayerIndex);
 
     private:
         void initDeckTemplate();
 
-        int potChipCount = 0;
-        std::vector<Player> players;
+        std::vector<Player*> players;
         std::deque<Card> deckTemplate;
 };
+#endif

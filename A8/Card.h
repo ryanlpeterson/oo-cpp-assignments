@@ -5,6 +5,9 @@
  * Due: 12/12/2021
  **/
 
+#ifndef CARD_H
+#define CARD_H
+
 #include <string>
 #include <array>
 
@@ -34,7 +37,7 @@ class Card
         int getValue();
 
         // returns the card rank and suit as a concatenated string
-        std::string toString();
+        std::string toString() const;
 
     private:
 
@@ -57,3 +60,4 @@ class Card
         char cardSuit;
 
 };
+#endif

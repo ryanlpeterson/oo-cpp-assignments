@@ -5,20 +5,27 @@
  * Due: 12/12/2021
  **/
 
+#ifndef DEALER_H
+#define DEALER_H
+
 #include <deque>
 #include <vector>
 #include "Card.h"
 #include "Player.h"
 
-class Dealer
+static class Dealer
 {
     public:
         // shuffle the deck of cards
-        void shuffle(std::deque<Card>& deck);
+        static void shuffle(std::deque<Card>& deck);
 
         // deal cards to players
-        void deal(std::deque<Card>& deck, std::vector<Player>& players);
+        static void deal(std::deque<Card>& deck, std::vector<Player*> players);
+
+        // collect cards back from players
+        static void collectCardsFromPlayers(std::vector<Player*> players);
 
     private:
         static const int MAX_HAND_SIZE = 5;
 };
+#endif

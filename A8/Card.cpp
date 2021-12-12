@@ -89,7 +89,7 @@ int Card::getValue()
 /**
  * Returns the card rank and suit as a concatenated string
  **/
-string Card::toString()
+string Card::toString() const
 {
     string str;
     str += cardRank;

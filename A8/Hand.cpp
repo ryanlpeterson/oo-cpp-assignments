@@ -28,6 +28,9 @@ Hand::Hand(Card card0, Card card1, Card card2, Card card3, Card card4) :
     checkHandType();
 }
 
+/**
+ * Adds a single card to the hand
+ **/
 void Hand::addCardToHand(Card card)
 {
     cards[cardsInHand] = card;
@@ -38,6 +41,14 @@ void Hand::addCardToHand(Card card)
         sortHand();
         checkHandType();
     }
+}
+
+/**
+ * Clears the cards in hand
+ **/
+void Hand::discardHand() {
+    cardsInHand = 0;
+    cards.fill(Card());
 }
 
 /**
@@ -371,7 +382,7 @@ int Hand::compareHands(Hand hand1, Hand hand2)
 /**
  * Returns the hand as a formatted string
  **/
-string Hand::toString()
+string Hand::toString() const
 {
     string str;
     str += "(";

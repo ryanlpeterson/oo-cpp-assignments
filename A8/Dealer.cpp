@@ -28,11 +28,17 @@ void Dealer::shuffle(deque<Card>& deck)
     }
 }
 
-void Dealer::deal(deque<Card>& deck, vector<Player>& players) {
+void Dealer::deal(deque<Card>& deck, vector<Player*> players) {
     for (int i = 0; i < MAX_HAND_SIZE; i++) {
         for (int j = 0; j < players.size(); j++) {
-            players[j].addCardToHand(deck.front());
+            players[j]->addCardToHand(deck.front());
             deck.pop_front();
         }
+    }
+}
+
+void Dealer::collectCardsFromPlayers(vector<Player*> players) {
+    for (int i = 0; i < players.size(); i++) {
+        players[i]->discardHand();
     }
 }
